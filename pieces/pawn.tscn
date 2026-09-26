@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://btkmqsabggtle"]
+
+[ext_resource type="Script" uid="uid://csty76f35s01i" path="res://pieces/chesspiece.gd" id="1_cuhp4"]
+[ext_resource type="ArrayMesh" uid="uid://dnnsihgllrn40" path="res://assets/12931_WoodenChessPawnSideA_v1_l3.obj" id="2_6wcmn"]
+
+[node name="Pawn" type="Node3D" unique_id=1500384376]
+script = ExtResource("1_cuhp4")
+
+[node name="12931WoodenChessPawnSideAV1L3" type="MeshInstance3D" parent="." unique_id=771079337]
+transform = Transform3D(0.1, 0, 0, 0, 0.0014454176, 0.099989556, 0, -0.099989556, 0.0014454176, 1.687108, -0.025572777, -1.1745701)
+mesh = ExtResource("2_6wcmn")
