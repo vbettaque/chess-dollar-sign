@@ -16,6 +16,7 @@ var occupying_piece: ChessPiece = null
 		size = new_size
 		_update_tile()
 
+
 @export var type: TileType = TileType.WHITE:
 	set(new_type):
 		type = new_type
@@ -26,6 +27,24 @@ var occupying_piece: ChessPiece = null
 	set(new_materials):
 		tile_materials = new_materials
 		_update_tile()
+		
+@export var highlight_material: Material
+
+var highlighted: bool:
+	set(new_highlighted):
+		highlighted = new_highlighted
+		_update_highlighting()
+	
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	area.mouse_entered.connect(func(): highlighted = true)
+	area.mouse_exited.connect(func(): highlighted = false)
+	
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
 
 func _update_tile():
 	if not is_node_ready():
@@ -39,16 +58,12 @@ func _update_tile():
 		TileType.WHITE:
 			mesh_instance.set_surface_override_material(0, tile_materials.get(TileType.WHITE))
 
-
-
-
 func is_occupied() -> bool:
 	return occupying_piece != null
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _update_highlighting():
+	if highlighted:
+		mesh_instance.get_active_material(0).next_pass = highlight_material
+	else:
+		mesh_instance.get_active_material(0).next_pass = null
+	
