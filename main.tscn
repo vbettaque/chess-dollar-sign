@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://b3pc6rejvbg2r"]
 
+[ext_resource type="Script" uid="uid://d3v7d43wqfhxb" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://bum2vkdwwojkg" path="res://chess_board.gd" id="1_ig7tw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7dm0k"]
@@ -14,6 +15,7 @@ background_color = Color(0.4011859, 0.5900458, 1, 1)
 sky = SubResource("Sky_ig7tw")
 
 [node name="Main" type="Node3D" unique_id=308334451]
+script = ExtResource("1_0xm2m")
 
 [node name="ChessBoard" type="Node3D" parent="." unique_id=521377053]
 script = ExtResource("1_ig7tw")
@@ -21,7 +23,7 @@ script = ExtResource("1_ig7tw")
 [node name="CameraRig" type="Node3D" parent="." unique_id=1700801412]
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=1464278010]
-transform = Transform3D(0.9281864, -0.33840477, 0.15476495, 0.0431011, 0.510876, 0.8585732, -0.36961097, -0.79024535, 0.48877382, 1.5354751, 5.0649104, 4.525994)
+transform = Transform3D(0.9281864, -0.33840477, 0.15476495, 0.0431011, 0.51087606, 0.8585732, -0.36961097, -0.7902455, 0.48877382, 1.5354751, 5.0649104, 4.525994)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=695648045]
 environment = SubResource("Environment_7dm0k")
