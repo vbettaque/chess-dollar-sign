@@ -87,24 +87,29 @@ func advance_rows(rows: int):
 				subtween.tween_property(tile, "process_mode", PROCESS_MODE_DISABLED, 0)
 				subtween.tween_property(tile, "position:y", -10, 0.1).set_delay(x * 0.1)
 				subtween.tween_property(tile, "visible", false, 0)
+				# PIECES TO BE REMOVED HERE (USING TWEEN)
 				subtween.tween_property(tile, "position:y", 10, 0)
 				subtween.tween_property(tile, "position:z", tile.position.z - 8 * tile.size.z, 0)
 				subtween.tween_property(tile, "visible", true, 0)
 				subtween.tween_property(tile, "position:y", 0, 0.5).set_delay(x * 0.01)
-				subtween.tween_property(tile, "process_mode", PROCESS_MODE_INHERIT, 0)
 				tween.tween_subtween(subtween)
 			else:
 				set_tile(x, y - rows, tile)
+	await tween.finished
 	for x in range(8):
 		for y in range(rows):
-			set_tile(x, 8 - rows, removed_tiles[8 * y + x])
-	await tween.finished
+			set_tile(x, 7 - y, removed_tiles[8 * y + x])
+	
+	for x in range(8):
+		for y in range(8):
+			var tile: ChessTile = get_tile(x, y)
 	
 	tween = get_tree().create_tween().set_parallel(true)
 	for x in range(8):
 		for y in range(8):
 			var tile: ChessTile = get_tile(x, y)
 			tween.tween_property(tile, "position:z", tile.position.z + rows * tile.size.z, 1)
+			tween.tween_property(tile, "process_mode", PROCESS_MODE_INHERIT, 0)
 	tween.chain().tween_property(self, "is_advancing", false, 0)
 		
 
