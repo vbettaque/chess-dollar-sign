@@ -6,7 +6,10 @@ enum TileType { WHITE, BLACK }
 @onready var mesh_instance: MeshInstance3D = $MeshInstance3D
 @onready var area: Area3D = $Area3D
 @onready var collision_shape: CollisionShape3D = $Area3D/CollisionShape3D
-
+# Grid coordinate on the board (e.g., Vector2i(0, 0))
+var board_position: Vector2i = Vector2i.ZERO
+# Reference to the piece currently on this tile (null if empty)
+var occupying_piece: ChessPiece = null
 
 @export var size: Vector3 = Vector3(1, 0.1, 1):
 	set(new_size):
@@ -38,10 +41,13 @@ func _update_tile():
 
 
 
+
+func is_occupied() -> bool:
+	return occupying_piece != null
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
