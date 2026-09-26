@@ -22,3 +22,24 @@ func move_to_tile(target_tile: ChessTile, new_board_pos: Vector2i) -> void:
 	var target_global_pos = target_tile.global_position + Vector3(0, target_tile.size.y / 2.0, 0)
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", target_global_pos, 0.25).set_trans(Tween.TRANS_QUAD)
+
+func apply_team_color(new_team: Team) -> void:
+	team = new_team
+	
+	# Create a unique material instance per piece
+	var mat := StandardMaterial3D.new()
+	if team == Team.WHITE:
+		mat.albedo_color = Color.WHITE
+	else:
+		mat.albedo_color = Color(0.15, 0.15, 0.15) # Dark black/charcoal
+	
+	_apply_material_override_recursive(self, mat)
+
+
+func _apply_material_override_recursive(node: Node, material: Material) -> void:
+	if node is MeshInstance3D:
+		# material_override overrides all surface slots cleanly
+		node.material_override = material
+		
+	for child in node.get_children():
+		_apply_material_override_recursive(child, material)

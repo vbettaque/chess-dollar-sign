@@ -17,12 +17,13 @@ const CHESS_TILE = preload("uid://bre0otua4gpui")
 
 var piece_scenes: Dictionary[ChessPiece.PieceType, PackedScene] = {}
 var grid: Dictionary[Vector2i, ChessTile] = {}
-
+var black_piece_count = 5
 
 func _ready() -> void:
 	_setup_piece_dictionary()
 	_init_board()
 	_spawn_custom_pawns()
+	_spawn_random_black_pawns(black_piece_count)
 
 
 func _setup_piece_dictionary() -> void:
@@ -52,28 +53,6 @@ func _init_board() -> void:
 			tile.board_position = Vector2i(i, j)
 			add_child(tile)
 			grid[Vector2i(i, j)] = tile
-
-
-func _spawn_all_pieces() -> void:
-	#var back_rank_types: Array[ChessPiece.PieceType] = [
-		#ChessPiece.PieceType.ROOK,
-		#ChessPiece.PieceType.KNIGHT,
-		#ChessPiece.PieceType.BISHOP,
-		#ChessPiece.PieceType.QUEEN,
-		#ChessPiece.PieceType.KING,
-		#ChessPiece.PieceType.BISHOP,
-		#ChessPiece.PieceType.KNIGHT,
-		#ChessPiece.PieceType.ROOK
-	#]
-
-	for i in range(8):
-		# White pieces (j = 0, 1)
-		_spawn_piece(i, 1, ChessPiece.PieceType.PAWN, ChessPiece.Team.WHITE)
-
-		# Black pieces (j = 6, 7)
-		_spawn_piece(i, 6, ChessPiece.PieceType.PAWN, ChessPiece.Team.BLACK)
-
-
 
 func _spawn_piece(i: int, j: int, type: ChessPiece.PieceType, team: ChessPiece.Team) -> void:
 	var tile_key := Vector2i(i, j)
@@ -137,6 +116,49 @@ func _apply_team_material(piece_node: Node, team: ChessPiece.Team) -> void:
 		elif child.get_child_count() > 0:
 			_apply_team_material(child, team)
 
+func _spawn_random_black_pawns(count: int) -> void:
+	if not pawn_scene:
+		push_error("pawn_scene is null! Please assign pawn.tscn in the Inspector.")
+		return
+
+	# Collect all keys for tiles that are currently empty
+	var empty_tile_keys: Array[Vector2i] = []
+	for key in grid.keys():
+		var tile: ChessTile = grid[key]
+		if not tile.is_occupied():
+			empty_tile_keys.append(key)
+
+	# Shuffle the available positions randomly
+	empty_tile_keys.shuffle()
+
+	# Clamp spawn count to available empty tiles
+	var spawn_amount = min(count, empty_tile_keys.size())
+
+	for i in range(spawn_amount):
+		var target_key: Vector2i = empty_tile_keys[i]
+		_spawn_pawn_at(target_key, ChessPiece.Team.BLACK)
+
+
+func _spawn_pawn_at(tile_key: Vector2i, team: ChessPiece.Team) -> void:
+	var target_tile: ChessTile = grid[tile_key]
+	var pawn: ChessPiece = pawn_scene.instantiate() as ChessPiece
+
+	if not pawn:
+		push_error("Failed to instantiate pawn_scene as ChessPiece.")
+		return
+
+	add_child(pawn)
+	pawn.piece_type = ChessPiece.PieceType.PAWN
+	pawn.apply_team_color(team)
+
+	# Snap piece transform to tile center
+	target_tile.occupying_piece = pawn
+	pawn.current_tile = target_tile
+	pawn.board_position = tile_key
+	
+	# Position pawn on top of tile surface without movement logic/tweens
+	var target_global_pos = target_tile.global_position + Vector3(0, target_tile.size.y / 2.0, 0)
+	pawn.global_position = target_global_pos
 
 func get_tile(i: int, j: int) -> ChessTile:
 	return grid.get(Vector2i(i, j), null)
