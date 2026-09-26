@@ -2,12 +2,28 @@
 
 [ext_resource type="Script" uid="uid://c4xdh150b0pem" path="res://tiles/chess_tile.gd" id="1_qsmgl"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4fkfa"]
-resource_local_to_scene = true
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qsmgl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_el6w8"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qsmgl"]
+size = Vector3(1, 0.1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qsmgl"]
+size = Vector3(1, 0.1, 1)
 
 [node name="ChessTile" type="Node3D" unique_id=522035209]
 script = ExtResource("1_qsmgl")
+tile_materials = Dictionary[int, Material]({
+0: SubResource("StandardMaterial3D_qsmgl"),
+1: SubResource("StandardMaterial3D_el6w8")
+})
 
-[node name="Mesh" type="CSGBox3D" parent="." unique_id=266192610]
-size = Vector3(1, 0.1, 1)
-material = SubResource("StandardMaterial3D_4fkfa")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1959897382]
+mesh = SubResource("BoxMesh_qsmgl")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1787914896]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=2095843229]
+shape = SubResource("BoxShape3D_qsmgl")

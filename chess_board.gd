@@ -20,10 +20,8 @@ func _init_board() -> void:
 			add_child(tile)
 			
 			if (i + j) % 2 == 0:
-				print(i, " ", j, ": white")
 				tile.type = ChessTile.TileType.WHITE
 			else:
-				print(i, " ", j, ": black")
 				tile.type = ChessTile.TileType.BLACK
 				
 			tile.position = Vector3(x, 0, z)
