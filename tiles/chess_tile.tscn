@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bre0otua4gpui"]
+
+[ext_resource type="Script" uid="uid://c4xdh150b0pem" path="res://tiles/chess_tile.gd" id="1_qsmgl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4fkfa"]
+resource_local_to_scene = true
+
+[node name="ChessTile" type="Node3D" unique_id=522035209]
+script = ExtResource("1_qsmgl")
+
+[node name="Mesh" type="CSGBox3D" parent="." unique_id=266192610]
+size = Vector3(1, 0.1, 1)
+material = SubResource("StandardMaterial3D_4fkfa")

@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://b3pc6rejvbg2r"]
+
+[ext_resource type="Script" uid="uid://bum2vkdwwojkg" path="res://chess_board.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://ddql2mpx5y65x" path="res://free_look_camera.gd" id="2_0xm2m"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7dm0k"]
+sky_top_color = Color(0.38431373, 0.45490196, 0.9137255, 1)
+
+[sub_resource type="Sky" id="Sky_ig7tw"]
+sky_material = SubResource("ProceduralSkyMaterial_7dm0k")
+
+[sub_resource type="Environment" id="Environment_7dm0k"]
+background_mode = 1
+background_color = Color(0.4011859, 0.5900458, 1, 1)
+sky = SubResource("Sky_ig7tw")
+
+[node name="Main" type="Node3D" unique_id=308334451]
+
+[node name="ChessBoard" type="Node3D" parent="." unique_id=521377053]
+script = ExtResource("1_ig7tw")
+
+[node name="CameraRig" type="Node3D" parent="." unique_id=1700801412]
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=1464278010]
+transform = Transform3D(0.96636605, -0.20279145, 0.15815274, 0.043101143, 0.7339877, 0.67779374, -0.25353295, -0.6481803, 0.7180413, 2.4839797, 7.373123, 11.195513)
+script = ExtResource("2_0xm2m")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=695648045]
+environment = SubResource("Environment_7dm0k")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=1123792538]
+transform = Transform3D(-0.2733753, 0.75207084, -0.5997128, 0, 0.6234621, 0.7818536, 0.9619075, 0.21373947, -0.17043911, 0, 12.055799, 0)
+sky_mode = 1
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1113432549]
+visible = false
+size = Vector3(16, 1, 16)
