@@ -135,6 +135,7 @@ func _on_player_king_captured() -> void:
 	
 
 func _on_restart_button_pressed() -> void:
+	get_tree().paused = false
 	get_tree().reload_current_scene()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
