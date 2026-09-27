@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://biqs83ynwlj5q"]
+
+[ext_resource type="PackedScene" uid="uid://c2gswc2yioqu3" path="res://assets/meshes/coinSpin01.glb" id="1_fiksb"]
+
+[node name="Coin" type="Node3D" unique_id=1600615826]
+
+[node name="coinSpin01" parent="." unique_id=1872751142 instance=ExtResource("1_fiksb")]
+transform = Transform3D(-0.009188321, -0.2498311, 0, 0.2498311, -0.009188321, 0, 0, 0, 0.25, 0.14481378, 0, 0.17221236)

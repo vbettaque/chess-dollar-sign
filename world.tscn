@@ -44,6 +44,7 @@ bishop_scene = ExtResource("5_wse8f")
 rook_scene = ExtResource("6_ic0uy")
 queen_scene = ExtResource("7_k3n1d")
 king_scene = ExtResource("4_gbfbk")
+enemy_spawn_chance = null
 
 [node name="CameraRig" type="Node3D" parent="." unique_id=1700801412]
 

@@ -35,7 +35,7 @@ var placement_type: ChessPiece.PieceType = ChessPiece.PieceType.PAWN
 var valid_placement_tiles: Array[Vector2i] = []
 
 var coins: int = 0
-
+const COIN_SCENE = preload("uid://biqs83ynwlj5q")
 const CAPTURE_COIN_VALUES: Dictionary[ChessPiece.PieceType, int] = {
 	ChessPiece.PieceType.PAWN: 1,
 	ChessPiece.PieceType.KNIGHT: 1,
@@ -237,12 +237,29 @@ func _generate_coins_for_pawns() -> void:
 	var pawn_count := 0
 	for piece in pieces:
 		if piece != null and piece.team == ChessPiece.Team.WHITE and piece.piece_type == ChessPiece.PieceType.PAWN:
+			_spawn_coin_for_piece(piece)
 			pawn_count += 1
 
 	if pawn_count > 0:
 		coins += pawn_count
 		coins_gained.emit(pawn_count)
+		
+func _spawn_coin_for_piece(piece: ChessPiece) -> void:
+	if piece == null:
+		return
+	var coin_instance = COIN_SCENE.instantiate()
+	if not coin_instance is Node3D:
+		push_error("COIN_SCENE root node must inherit from Node3D!")
+		return
 
+	var spawn_offset := Vector3(0.0, 1.0, -0.8)
+	coin_instance.global_position = piece.global_position + spawn_offset
+	add_child(coin_instance)
+	var tween := create_tween().set_parallel(true)
+	tween.tween_property(coin_instance, "global_position:y", coin_instance.global_position.y + 0.5, 1.0)
+	tween.tween_property(coin_instance, "scale", Vector3.ZERO, 1.0).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	tween.finished.connect(coin_instance.queue_free)
+	
 # --- Board Cleared Check ---
 func check_is_board_cleared() -> bool:
 	for piece in pieces:
