@@ -4,7 +4,11 @@
 [ext_resource type="Script" uid="uid://bum2vkdwwojkg" path="res://chess_board.gd" id="2_dwbse"]
 [ext_resource type="PackedScene" uid="uid://btkmqsabggtle" path="res://pieces/pawn.tscn" id="3_pkg7o"]
 [ext_resource type="PackedScene" uid="uid://cql4u1hx3xk1r" path="res://pieces/king.tscn" id="4_gbfbk"]
+[ext_resource type="PackedScene" uid="uid://bmo6rhtfxwa3e" path="res://pieces/knight.tscn" id="4_ioo17"]
 [ext_resource type="Shader" uid="uid://cw2sn4ibvsfxw" path="res://shaders/outline.gdshader" id="5_ioo17"]
+[ext_resource type="PackedScene" uid="uid://crujqwkpkkj63" path="res://pieces/bishop.tscn" id="5_wse8f"]
+[ext_resource type="PackedScene" uid="uid://dmugy18g5h40e" path="res://pieces/rook.tscn" id="6_ic0uy"]
+[ext_resource type="PackedScene" uid="uid://bu1tx3ydbfmf" path="res://pieces/queen.tscn" id="7_k3n1d"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_1bvp3"]
 flip_faces = true
@@ -35,6 +39,10 @@ script = ExtResource("1_036b0")
 [node name="ChessBoard" type="Node3D" parent="." unique_id=521377053]
 script = ExtResource("2_dwbse")
 pawn_scene = ExtResource("3_pkg7o")
+knight_scene = ExtResource("4_ioo17")
+bishop_scene = ExtResource("5_wse8f")
+rook_scene = ExtResource("6_ic0uy")
+queen_scene = ExtResource("7_k3n1d")
 king_scene = ExtResource("4_gbfbk")
 
 [node name="CameraRig" type="Node3D" parent="." unique_id=1700801412]

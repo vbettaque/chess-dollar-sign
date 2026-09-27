@@ -75,6 +75,25 @@ func get_piece(x: int, y: int) -> ChessPiece:
 func _setup_piece_dictionary() -> void:
 	if not pawn_scene and ResourceLoader.exists("res://pawn.tscn"):
 		pawn_scene = load("res://pawn.tscn")
+	if not knight_scene and ResourceLoader.exists("res://knight.tscn"):
+		knight_scene = load("res://knight.tscn")
+	if not bishop_scene and ResourceLoader.exists("res://bishop.tscn"):
+		bishop_scene = load("res://bishop.tscn")
+	if not rook_scene and ResourceLoader.exists("res://rook.tscn"):
+		rook_scene = load("res://rook.tscn")
+	if not queen_scene and ResourceLoader.exists("res://queen.tscn"):
+		queen_scene = load("res://queen.tscn")
+	if not king_scene and ResourceLoader.exists("res://king.tscn"):
+		king_scene = load("res://king.tscn")
+
+	piece_scenes = {
+		ChessPiece.PieceType.PAWN: pawn_scene,
+		ChessPiece.PieceType.KNIGHT: knight_scene,
+		ChessPiece.PieceType.BISHOP: bishop_scene,
+		ChessPiece.PieceType.ROOK: rook_scene,
+		ChessPiece.PieceType.QUEEN: queen_scene,
+		ChessPiece.PieceType.KING: king_scene
+	}
 
 	piece_scenes = {
 		ChessPiece.PieceType.PAWN: pawn_scene,
@@ -115,8 +134,9 @@ func _init_board() -> void:
 # --- Set up starting pieces ---
 func _spawn_initial_pieces() -> void:
 	# 1. Spawn player pawns along the bottom row (y = 1)
-	for x in range(3,6):
-		_spawn_piece_at(x, 1, ChessPiece.PieceType.PAWN, ChessPiece.Team.WHITE)
+	_spawn_piece_at(0, 0, ChessPiece.PieceType.ROOK, ChessPiece.Team.WHITE)
+	_spawn_piece_at(1, 0, ChessPiece.PieceType.KNIGHT, ChessPiece.Team.WHITE)
+	_spawn_piece_at(2, 0, ChessPiece.PieceType.BISHOP, ChessPiece.Team.WHITE)
 	_spawn_piece_at(4, 0, ChessPiece.PieceType.KING, ChessPiece.Team.WHITE)
 
 	# 2. Spawn initial random enemy pieces along top n rows rows (i.e. if n = 2 then y = 6 and y = 7)
@@ -339,6 +359,22 @@ func select_piece(piece: ChessPiece) -> void:
 			valid_move_tiles = get_pawn_moves(piece)
 		ChessPiece.PieceType.KING:
 			valid_move_tiles = get_king_moves(piece)
+		ChessPiece.PieceType.KNIGHT:
+			valid_move_tiles = get_knight_moves(piece)
+		ChessPiece.PieceType.ROOK:
+			valid_move_tiles = get_sliding_moves(piece, [
+				Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0)
+			])
+		ChessPiece.PieceType.QUEEN:
+			valid_move_tiles = get_sliding_moves(piece, [
+				Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0),
+				Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1)
+			])
+		ChessPiece.PieceType.BISHOP:
+			valid_move_tiles = get_sliding_moves(piece, [
+				Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1)
+			])
+			
 
 	# Highlight valid tiles
 	for pos in valid_move_tiles:
@@ -358,6 +394,50 @@ func deselect_piece() -> void:
 	valid_move_tiles.clear()
 
 # --- Movement Logic ---
+## Calculates ray/sliding moves for Rook, Bishop, and Queen
+func get_sliding_moves(piece: ChessPiece, directions: Array[Vector2i]) -> Array[Vector2i]:
+	var moves: Array[Vector2i] = []
+	var start_pos: Vector2i = piece.board_position
+
+	for dir in directions:
+		var current_pos: Vector2i = start_pos + dir
+
+		while is_valid_position(current_pos):
+			var target_piece: ChessPiece = get_piece(current_pos.x, current_pos.y)
+
+			if target_piece == null:
+				# Empty tile: valid move, keep sliding along ray
+				moves.append(current_pos)
+			elif target_piece.team != piece.team:
+				# Enemy piece: capture move, stop sliding ray
+				moves.append(current_pos)
+				break
+			else:
+				# Friendly piece: blocked, stop sliding ray
+				break
+
+			current_pos += dir
+
+	return moves
+
+
+## Calculates fixed L-shaped jump moves for Knight
+func get_knight_moves(piece: ChessPiece) -> Array[Vector2i]:
+	var moves: Array[Vector2i] = []
+	var offsets: Array[Vector2i] = [
+		Vector2i(1, 2), Vector2i(2, 1), Vector2i(-1, 2), Vector2i(-2, 1),
+		Vector2i(1, -2), Vector2i(2, -1), Vector2i(-1, -2), Vector2i(-2, -1)
+	]
+
+	for offset in offsets:
+		var target_pos: Vector2i = piece.board_position + offset
+		if is_valid_position(target_pos):
+			var target_piece: ChessPiece = get_piece(target_pos.x, target_pos.y)
+			if target_piece == null or target_piece.team != piece.team:
+				moves.append(target_pos)
+
+	return moves
+
 func get_pawn_moves(pawn: ChessPiece) -> Array[Vector2i]:
 	var moves: Array[Vector2i] = []
 	var pos := pawn.board_position
@@ -413,6 +493,10 @@ const CAPTURE_COIN_VALUES: Dictionary[ChessPiece.PieceType, int] = {
 	ChessPiece.PieceType.KING: 10
 }
 
+## Grid boundary check (assuming 8x8 grid)
+func is_valid_position(pos: Vector2i) -> bool:
+	return pos.x >= 0 and pos.x < 8 and pos.y >= 0 and pos.y < 8
+
 # --- Piece Execution ---
 func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 	var old_pos := piece.board_position
@@ -450,24 +534,33 @@ func _award_capture_coins(captured_piece: ChessPiece) -> void:
 	print("current coins: ", coins)
 
 # -- valid moves ---
-func get_valid_moves_for_piece(piece: ChessPiece) -> Array[Vector2i]:
+func get_valid_moves(piece: ChessPiece) -> Array[Vector2i]:
+	var valid_moves: Array[Vector2i] = []
+	if piece == null:
+		return valid_moves
+
 	match piece.piece_type:
 		ChessPiece.PieceType.PAWN:
 			return get_pawn_moves(piece)
+		ChessPiece.PieceType.KNIGHT:
+			return get_knight_moves(piece)
+		ChessPiece.PieceType.ROOK:
+			return get_sliding_moves(piece, [
+				Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0)
+			])
+		ChessPiece.PieceType.BISHOP:
+			return get_sliding_moves(piece, [
+				Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1)
+			])
+		ChessPiece.PieceType.QUEEN:
+			return get_sliding_moves(piece, [
+				Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0),
+				Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1)
+			])
 		ChessPiece.PieceType.KING:
 			return get_king_moves(piece)
-		#ChessPiece.PieceType.KNIGHT:
-			#return get_knight_moves(piece)
-		#ChessPiece.PieceType.ROOK:
-			#return get_sliding_moves(piece, [Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0)])
-		#ChessPiece.PieceType.BISHOP:
-			#return get_sliding_moves(piece, [Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1)])
-		#ChessPiece.PieceType.QUEEN:
-			#return get_sliding_moves(piece, [
-				#Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0),
-				#Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1)
-			#])
-	return []
+
+	return valid_moves
 
 #--- enemy turn ---
 
@@ -482,24 +575,24 @@ class AIMove:
 		target_pos = p_target
 		score = p_score
 
-func get_sliding_moves(piece: ChessPiece, directions: Array[Vector2i]) -> Array[Vector2i]:
-	var moves: Array[Vector2i] = []
-	for dir in directions:
-		var step := 1
-		while true:
-			var target := piece.board_position + (dir * step)
-			if not is_in_bounds(target):
-				break
-			var occupant := get_piece(target.x, target.y)
-			if occupant == null:
-				moves.append(target)
-			elif occupant.team != piece.team:
-				moves.append(target)
-				break
-			else:
-				break
-			step += 1
-	return moves
+#func get_sliding_moves(piece: ChessPiece, directions: Array[Vector2i]) -> Array[Vector2i]:
+	#var moves: Array[Vector2i] = []
+	#for dir in directions:
+		#var step := 1
+		#while true:
+			#var target := piece.board_position + (dir * step)
+			#if not is_in_bounds(target):
+				#break
+			#var occupant := get_piece(target.x, target.y)
+			#if occupant == null:
+				#moves.append(target)
+			#elif occupant.team != piece.team:
+				#moves.append(target)
+				#break
+			#else:
+				#break
+			#step += 1
+	#return moves
 
 func process_enemy_turn() -> void:
 	# Brief delay so enemy move doesn't happen instantly
@@ -512,7 +605,7 @@ func process_enemy_turn() -> void:
 		for y in range(8):
 			var piece := get_piece(x, y)
 			if piece and piece.team == ChessPiece.Team.BLACK:
-				var valid_tiles := get_valid_moves_for_piece(piece)
+				var valid_tiles := get_valid_moves(piece)
 				for target_pos in valid_tiles:
 					var score := _evaluate_move(piece, target_pos)
 					possible_moves.append(AIMove.new(piece, target_pos, score))

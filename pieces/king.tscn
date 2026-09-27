@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://cql4u1hx3xk1r"]
 
 [ext_resource type="Script" uid="uid://csty76f35s01i" path="res://pieces/chesspiece.gd" id="1_4hwgk"]
-[ext_resource type="ArrayMesh" uid="uid://bqhar03l8qdd8" path="res://assets/meshes/12926_Wooden_Chess_King_Side_A_v1_l3.obj" id="1_v7vo4"]
+[ext_resource type="ArrayMesh" uid="uid://ckxdkhd2h1os6" path="res://assets/meshes/King01.obj" id="2_4hwgk"]
 
 [node name="King" type="Node3D" unique_id=270302508]
 script = ExtResource("1_4hwgk")
 
-[node name="12926WoodenChessKingSideAV1L3" type="MeshInstance3D" parent="." unique_id=543145137]
-transform = Transform3D(0.1, 0, 0, 0, -8.28429e-05, 0.099999964, 0, -0.099999964, -8.28429e-05, -0.20116436, 1.1920929e-07, -1.5425537)
-mesh = ExtResource("1_v7vo4")
+[node name="King01" type="MeshInstance3D" parent="." unique_id=74379701]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.046102155, 0, 0.010132313)
+mesh = ExtResource("2_4hwgk")
