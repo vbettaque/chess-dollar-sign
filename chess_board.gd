@@ -28,7 +28,7 @@ var pieces: Array[ChessPiece]
 var piece_scenes: Dictionary[ChessPiece.PieceType, PackedScene] = {}
 var selected_piece: ChessPiece = null
 var valid_move_tiles: Array[Vector2i] = []
-
+var has_player_king_died: bool = false
 # --- Placement State ---
 var is_placing_piece: bool = false
 var placement_type: ChessPiece.PieceType = ChessPiece.PieceType.PAWN
@@ -81,6 +81,7 @@ func spawn_new_pawn() -> void:
 		var tile := get_tile(pos.x, pos.y)
 		if tile:
 			tile.highlighted = true
+	
 
 ## Clears placement highlights and exits placement mode.
 func cancel_placement_mode() -> void:
@@ -157,15 +158,16 @@ func spawn_random_enemy_row(y: int, team: ChessPiece.Team) -> void:
 # --- Turn Handling ---
 func end_turn() -> void:
 	deselect_piece()
-
 	if turn == TurnState.WHITE:
 		_generate_coins_for_pawns()
 
 	turn = TurnState.BLACK if turn == TurnState.WHITE else TurnState.WHITE
 	turn_changed.emit(turn)
-
+	
 	if turn == TurnState.BLACK:
 		process_enemy_turn()
+	if has_player_king_died:
+		player_king_capture.emit()
 
 # --- Grid Helpers ---
 func set_tile(x: int, y: int, tile: ChessTile) -> void:
@@ -370,6 +372,7 @@ func handle_tile_clicked(tile: ChessTile) -> void:
 	if is_placing_piece:
 		if clicked_pos in valid_placement_tiles:
 			spawn_piece_at(clicked_pos.x, clicked_pos.y, placement_type, ChessPiece.Team.WHITE)
+			end_turn()
 		cancel_placement_mode()
 		return
 
@@ -526,8 +529,6 @@ func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 	if enemy_piece:
 		if piece.team == ChessPiece.Team.WHITE and enemy_piece.team == ChessPiece.Team.BLACK:
 			_award_capture_coins(enemy_piece)
-		if enemy_piece.team == ChessPiece.Team.WHITE and enemy_piece.piece_type == ChessPiece.PieceType.KING:
-			player_king_capture.emit()
 		enemy_piece.queue_free()
 		
 
@@ -549,6 +550,9 @@ func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 	move_tween.tween_property(piece, "position", Vector3(0, local_top_y, 0), 0.25)\
 		.set_trans(Tween.TRANS_QUAD)\
 		.set_ease(Tween.EASE_OUT)
+	if enemy_piece:
+		if enemy_piece.team == ChessPiece.Team.WHITE and enemy_piece.piece_type == ChessPiece.PieceType.KING:
+				has_player_king_died = true
 
 func _award_capture_coins(captured_piece: ChessPiece) -> void:
 	var value: int = CAPTURE_COIN_VALUES.get(captured_piece.piece_type, 0)
