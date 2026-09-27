@@ -1,3 +1,11 @@
 [gd_scene format=3 uid="uid://bmo6rhtfxwa3e"]
 
+[ext_resource type="ArrayMesh" uid="uid://djp7f3kkt6dfw" path="res://assets/meshes/knight01.obj" id="1_6p52s"]
+[ext_resource type="Script" uid="uid://csty76f35s01i" path="res://pieces/chesspiece.gd" id="1_xjawi"]
+
 [node name="Knight" type="Node3D" unique_id=2004892079]
+script = ExtResource("1_xjawi")
+
+[node name="Knight01" type="MeshInstance3D" parent="." unique_id=1321334716]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.014231563, 0, 0.09118533)
+mesh = ExtResource("1_6p52s")

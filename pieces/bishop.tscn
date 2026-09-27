@@ -1,3 +1,11 @@
 [gd_scene format=3 uid="uid://crujqwkpkkj63"]
 
+[ext_resource type="Script" uid="uid://csty76f35s01i" path="res://pieces/chesspiece.gd" id="1_5s3ox"]
+[ext_resource type="ArrayMesh" uid="uid://bbf8loqmni5qs" path="res://assets/meshes/Bishop01.obj" id="1_vq1pg"]
+
 [node name="Bishop" type="Node3D" unique_id=98608114]
+script = ExtResource("1_5s3ox")
+
+[node name="Bishop01" type="MeshInstance3D" parent="." unique_id=2037262576]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.03230405, -1.1920929e-07, -0.0060765743)
+mesh = ExtResource("1_vq1pg")

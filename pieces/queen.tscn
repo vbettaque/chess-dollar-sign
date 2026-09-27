@@ -1,3 +1,11 @@
 [gd_scene format=3 uid="uid://bu1tx3ydbfmf"]
 
+[ext_resource type="Script" uid="uid://csty76f35s01i" path="res://pieces/chesspiece.gd" id="1_ntih4"]
+[ext_resource type="ArrayMesh" uid="uid://nepqnvt0dfbq" path="res://assets/meshes/Queen01.obj" id="1_shiw1"]
+
 [node name="Queen" type="Node3D" unique_id=102771298]
+script = ExtResource("1_ntih4")
+
+[node name="Queen01" type="MeshInstance3D" parent="." unique_id=1853408343]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0313766, 0, -0.016843557)
+mesh = ExtResource("1_shiw1")
