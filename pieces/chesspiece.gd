@@ -8,6 +8,8 @@ enum Team { WHITE, BLACK }
 @export var team: Team = Team.WHITE
 @export var mesh_node: MeshInstance3D
 
+const TOON: Shader = preload("uid://o22rcd8gmf35")
+
 var is_highlighted: bool = false
 var is_selected: bool = false
 var board_position: Vector2i = Vector2i.ZERO
@@ -15,11 +17,13 @@ var current_tile: ChessTile = null
 
 func apply_team_color(new_team: Team) -> void:
 	team = new_team
-	var mat := StandardMaterial3D.new()
+	var mat := ShaderMaterial.new()
+	mat.shader = TOON
+	mat.set_shader_parameter("use_specular", false)
 	if team == Team.WHITE:
-		mat.albedo_color = Color(0.9, 0.9, 0.9)
+		mat.set_shader_parameter("albedo", Color(0.9, 0.9, 0.9))
 	else:
-		mat.albedo_color = Color(0.15, 0.15, 0.15)
+		mat.set_shader_parameter("albedo", Color(0.30, 0.30, 0.30))
 	
 	_apply_material_override_recursive(self, mat)
 
