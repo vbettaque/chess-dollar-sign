@@ -96,11 +96,12 @@ func _upgrade_piece(piece: ChessPiece, type: ChessPiece.PieceType) -> void:
 	piece.piece_type = type
 	world.chess_board.end_turn()
 
-func _on_turn_changed(turn: ChessBoard.TurnState) -> void:
-	pass
+func _on_turn_changed(turn_state: ChessBoard.TurnState) -> void:
+	if turn_state == ChessBoard.TurnState.WHITE:
+		turn += 1
 	
 func _on_coins_gained(new_coins: int) -> void:
-	coins = new_coins
+	coins += new_coins
 	
 func _on_pawn_button_pressed() -> void:
 	pass

@@ -51,7 +51,7 @@ func end_turn() -> void:
 		print("current coins: ", coins)
 	
 	turn = TurnState.BLACK if turn == TurnState.WHITE else TurnState.WHITE
-	turn_changed.emit(TurnState.BLACK)
+	turn_changed.emit(turn)
 
 	if turn == TurnState.BLACK:
 		process_enemy_turn()
