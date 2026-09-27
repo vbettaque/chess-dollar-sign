@@ -1,7 +1,9 @@
 [gd_resource type="Theme" format=3 uid="uid://dmqi4uo3imwp6"]
 
 [ext_resource type="Texture2D" uid="uid://gilu41nt2dfb" path="res://assets/gui/Textures/T_UI_button.png" id="1_e1x85"]
+[ext_resource type="Texture2D" uid="uid://d0a0w4ucgecwq" path="res://assets/gui/Textures/T_UI_popup_container.png" id="2_a8th1"]
 [ext_resource type="FontFile" uid="uid://bhm3m66unb6ot" path="res://assets/gui/font/Rajdhani-Bold.ttf" id="2_cjfk0"]
+[ext_resource type="Texture2D" uid="uid://cv1h0jng6qfqq" path="res://assets/gui/Textures/T_UI_popup_button_hover_good.png" id="3_jihbb"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i22a1"]
 texture = ExtResource("1_e1x85")
@@ -57,8 +59,30 @@ texture_margin_right = 43.0
 texture_margin_bottom = 43.0
 modulate_color = Color(0.85814106, 0.85814106, 0.85814106, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kek77"]
+texture = ExtResource("3_jihbb")
+texture_margin_left = 43.0
+texture_margin_right = 43.0
+expand_margin_top = 8.0
+expand_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_036b0"]
+color = Color(0.3529412, 0.25882354, 0.10980392, 1)
+thickness = 6
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5moqx"]
+texture = ExtResource("2_a8th1")
+texture_margin_left = 43.0
+texture_margin_top = 43.0
+texture_margin_right = 43.0
+texture_margin_bottom = 43.0
+
+[sub_resource type="FontVariation" id="FontVariation_1bvp3"]
+base_font = ExtResource("2_cjfk0")
+spacing_glyph = 4
+
 [resource]
-default_font = ExtResource("2_cjfk0")
+default_font = SubResource("FontVariation_1bvp3")
 default_font_size = 44
 Button/colors/font_color = Color(0.9607843, 0.8745098, 0.7372549, 1)
 Button/colors/font_disabled_color = Color(0.18469319, 0.16433512, 0.13194728, 1)
@@ -77,4 +101,19 @@ MarginContainer/constants/margin_bottom = 200
 MarginContainer/constants/margin_left = 200
 MarginContainer/constants/margin_right = 200
 MarginContainer/constants/margin_top = 200
+PopupMenu/colors/font_color = Color(0.3529412, 0.25882354, 0.10980392, 1)
+PopupMenu/colors/font_disabled_color = Color(0.9529412, 0.19215687, 0.32156864, 1)
+PopupMenu/colors/font_hover_color = Color(0.9647059, 0.87058824, 0.73333335, 1)
+PopupMenu/colors/font_separator_color = Color(0.3529412, 0.25882354, 0.10980392, 1)
+PopupMenu/constants/item_end_padding = 16
+PopupMenu/constants/item_start_padding = 16
+PopupMenu/constants/v_separation = 16
+PopupMenu/fonts/font = ExtResource("2_cjfk0")
+PopupMenu/fonts/font_separator = ExtResource("2_cjfk0")
+PopupMenu/fonts/title_font = ExtResource("2_cjfk0")
+PopupMenu/styles/hover = SubResource("StyleBoxTexture_kek77")
+PopupMenu/styles/labeled_separator_left = SubResource("StyleBoxLine_036b0")
+PopupMenu/styles/labeled_separator_right = SubResource("StyleBoxLine_036b0")
+PopupMenu/styles/panel = SubResource("StyleBoxTexture_5moqx")
+PopupMenu/styles/separator = SubResource("StyleBoxLine_036b0")
 VBoxContainer/constants/separation = 128

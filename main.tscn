@@ -1,6 +1,18 @@
 [gd_scene format=3 uid="uid://visasat58mgs"]
 
+[ext_resource type="Script" uid="uid://dr5vhnmaxedd3" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://b3pc6rejvbg2r" path="res://world.tscn" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://bbklwwcg0hnr5" path="res://assets/gui/Icons/T_UI_ico_coin.png" id="3_h2yge"]
+[ext_resource type="Theme" uid="uid://dmqi4uo3imwp6" path="res://gui/theme.tres" id="4_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://dw4123h21v47s" path="res://assets/gui/Icons/T_UI_ico_pieces_rook.png" id="4_kek77"]
+[ext_resource type="Texture2D" uid="uid://oyxrh8atp6tr" path="res://assets/gui/Icons/T_UI_ico_pieces_bishop.png" id="5_4c57u"]
+[ext_resource type="FontFile" uid="uid://bhm3m66unb6ot" path="res://assets/gui/font/Rajdhani-Bold.ttf" id="5_lquwl"]
+[ext_resource type="Texture2D" uid="uid://dnhxb35oafcou" path="res://assets/gui/Icons/T_UI_ico_pieces_knight.png" id="6_efxa6"]
+[ext_resource type="Texture2D" uid="uid://dsx3v5ttv3vxg" path="res://assets/gui/Icons/T_UI_ico_pieces_queen.png" id="7_dg77c"]
+
+[sub_resource type="FontVariation" id="FontVariation_1bvp3"]
+base_font = ExtResource("5_lquwl")
+spacing_glyph = 4
 
 [node name="Main" type="Control" unique_id=84328888]
 layout_mode = 3
@@ -10,6 +22,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+mouse_force_pass_scroll_events = false
+script = ExtResource("1_0xm2m")
+coins = 99
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1348996023]
 layout_mode = 1
@@ -20,6 +35,7 @@ grow_horizontal = 2
 grow_vertical = 2
 stretch = true
 stretch_shrink = 2
+mouse_target = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1756587718]
 handle_input_locally = false
@@ -29,3 +45,69 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="World" parent="SubViewportContainer/SubViewport" unique_id=308334451 instance=ExtResource("1_ig7tw")]
+
+[node name="UpgradeMenu" type="PopupMenu" parent="." unique_id=1215613394]
+oversampling_override = 1.0
+title = "Upgrade"
+theme = ExtResource("4_1bvp3")
+item_count = 5
+item_0/text = "Upgrade to"
+item_0/id = 0
+item_0/separator = true
+item_1/text = "Knight"
+item_1/icon = ExtResource("6_efxa6")
+item_1/id = 1
+item_2/text = "Bishop"
+item_2/icon = ExtResource("5_4c57u")
+item_2/id = 2
+item_3/text = "Rook"
+item_3/icon = ExtResource("4_kek77")
+item_3/id = 3
+item_4/text = "Queen"
+item_4/icon = ExtResource("7_dg77c")
+item_4/id = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1045939200]
+layout_mode = 1
+offset_right = 378.0
+offset_bottom = 252.0
+theme = ExtResource("4_1bvp3")
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1878144199]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TurnCounter" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1375107167]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("4_1bvp3")
+theme_override_colors/font_color = Color(0.9647059, 0.8745098, 0.7372549, 1)
+theme_override_colors/font_shadow_color = Color(0.49411765, 0.7607843, 0.8352941, 1)
+theme_override_colors/font_outline_color = Color(0.35686275, 0.25882354, 0.10980392, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 16
+theme_override_constants/shadow_outline_size = 29
+text = "Turn: 1"
+
+[node name="CoinContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1289125007]
+layout_mode = 2
+
+[node name="CoinTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/CoinContainer" unique_id=1102925834]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("3_h2yge")
+
+[node name="CoinCounter" type="Label" parent="MarginContainer/VBoxContainer/CoinContainer" unique_id=1655670660]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("4_1bvp3")
+theme_override_colors/font_color = Color(0.9882353, 0.9411765, 0.11372549, 1)
+theme_override_colors/font_outline_color = Color(0.35686275, 0.25882354, 0.10980392, 1)
+theme_override_constants/outline_size = 16
+theme_override_fonts/font = SubResource("FontVariation_1bvp3")
+text = "0"

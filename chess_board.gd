@@ -12,6 +12,8 @@ const CHESS_TILE = preload("uid://bre0otua4gpui")
 @export var king_scene: PackedScene
 @export_range(0.0, 1.0) var enemy_spawn_chance: float = 0.20
 
+signal tile_right_clicked(tile: ChessTile)
+
 var turn = "WHITE"
 enum turnState {PlayerTurn, EnemyTurn}
 var is_advancing: bool = false
@@ -118,6 +120,7 @@ func _init_board() -> void:
 
 			# --- CONNECT TILE CLICK SIGNAL HERE ---
 			tile.tile_clicked.connect(handle_tile_clicked)
+			tile.tile_right_clicked.connect(handle_tile_right_clicked)
 
 			if (i + j) % 2 == 0:
 				tile.type = ChessTile.TileType.WHITE
@@ -347,6 +350,11 @@ func handle_tile_clicked(tile: ChessTile) -> void:
 
 	# 3. Deselect if clicking empty space or invalid tile
 	deselect_piece()
+	
+	
+func handle_tile_right_clicked(tile: ChessTile) -> void:
+	tile_right_clicked.emit(tile)
+	
 
 func select_piece(piece: ChessPiece) -> void:
 	deselect_piece()
