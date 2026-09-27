@@ -69,32 +69,25 @@ func change_piece(type: PieceType) -> void:
 	piece_type = type
 	update_mesh(type)
 
+
 func update_mesh(type: PieceType) -> void:
-	if not is_node_ready(): 
-		await ready
+	piece_type = type
 
-	# 1. Remove the old mesh instance if one exists
-	if is_instance_valid(mesh_node):
-		mesh_node.queue_free()
-		mesh_node = null
+	# 1. Remove all existing child nodes (clears pawn.tscn or previous meshes safely without null errors)
+	for child in get_children():
+		remove_child(child)
+		child.queue_free()
 
-	# 2. Get the scene for the target piece type
+	# 2. Get the new piece scene from PIECE_SCENES
 	var scene: PackedScene = PIECE_SCENES.get(type)
 	if not scene:
 		push_error("No scene found for piece type: ", type)
 		return
 
-	# 3. Instantiate and attach the new mesh scene
+	# 3. Instantiate and attach the new scene node
 	var instance := scene.instantiate()
 	add_child(instance)
 
-	# 4. Update mesh_node reference
-	if instance is MeshInstance3D:
-		mesh_node = instance
-	else:
-		# If the scene root is a Node3D container, grab its first MeshInstance3D child
-		mesh_node = instance.find_children("*", "MeshInstance3D", true, false).front() as MeshInstance3D
-
-	# 5. Re-apply team color shader to the newly added mesh
+	# 4. Re-apply team shader materials to the newly spawned piece
 	apply_team_color(team)
 	
