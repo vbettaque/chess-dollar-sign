@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bqhar03l8qdd8"
+path="res://.godot/imported/12926_Wooden_Chess_King_Side_A_v1_l3.obj-9bfd6abcc8a577678cd6fa2083890730.mesh"
+
+[deps]
+
+files=["res://.godot/imported/12926_Wooden_Chess_King_Side_A_v1_l3.obj-9bfd6abcc8a577678cd6fa2083890730.mesh"]
+
+source_file="res://assets/meshes/12926_Wooden_Chess_King_Side_A_v1_l3.obj"
+dest_files=["res://.godot/imported/12926_Wooden_Chess_King_Side_A_v1_l3.obj-9bfd6abcc8a577678cd6fa2083890730.mesh", "res://.godot/imported/12926_Wooden_Chess_King_Side_A_v1_l3.obj-9bfd6abcc8a577678cd6fa2083890730.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

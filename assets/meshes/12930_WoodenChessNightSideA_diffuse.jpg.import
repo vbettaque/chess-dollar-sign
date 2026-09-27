@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c36elyijvafp5"
-path.s3tc="res://.godot/imported/12935_WoodenChessBishopSideB_diffuse.jpg-7c36e8cb502bf2db47d4f7d47260614b.s3tc.ctex"
+uid="uid://dcv7edf3bc5ne"
+path.s3tc="res://.godot/imported/12930_WoodenChessNightSideA_diffuse.jpg-7374ba24d90817788935f1431fd3b235.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/12935_WoodenChessBishopSideB_diffuse.jpg"
-dest_files=["res://.godot/imported/12935_WoodenChessBishopSideB_diffuse.jpg-7c36e8cb502bf2db47d4f7d47260614b.s3tc.ctex"]
+source_file="res://assets/meshes/12930_WoodenChessNightSideA_diffuse.jpg"
+dest_files=["res://.godot/imported/12930_WoodenChessNightSideA_diffuse.jpg-7374ba24d90817788935f1431fd3b235.s3tc.ctex"]
 
 [params]
 

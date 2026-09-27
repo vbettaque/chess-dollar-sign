@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bwk8xd8w4yxnm"
-path.s3tc="res://.godot/imported/12934_WoodenChessRookSideB_Diffuse.jpg-ee508648d12ed73f3d36c8bb5ecbc3b4.s3tc.ctex"
+path.s3tc="res://.godot/imported/12934_WoodenChessRookSideB_Diffuse.jpg-38538d30a24811d51bfe3456c814086a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/12934_WoodenChessRookSideB_Diffuse.jpg"
-dest_files=["res://.godot/imported/12934_WoodenChessRookSideB_Diffuse.jpg-ee508648d12ed73f3d36c8bb5ecbc3b4.s3tc.ctex"]
+source_file="res://assets/meshes/12934_WoodenChessRookSideB_Diffuse.jpg"
+dest_files=["res://.godot/imported/12934_WoodenChessRookSideB_Diffuse.jpg-38538d30a24811d51bfe3456c814086a.s3tc.ctex"]
 
 [params]
 
