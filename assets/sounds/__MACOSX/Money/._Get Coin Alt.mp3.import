@@ -1,0 +1,18 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dw8pdyl3ybqf4"
+valid=false
+
+[deps]
+
+source_file="res://assets/sounds/__MACOSX/Money/._Get Coin Alt.mp3"
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

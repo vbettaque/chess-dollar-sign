@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cwxffe4xo5mvh"
+path="res://.godot/imported/Grass Wet Crunch.mp3-74eb751e79ec50763610c9bcee78df8d.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Grass Impact/Grass Wet Crunch.mp3"
+dest_files=["res://.godot/imported/Grass Wet Crunch.mp3-74eb751e79ec50763610c9bcee78df8d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

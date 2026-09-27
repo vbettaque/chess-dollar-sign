@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dnhxb35oafcou" path="res://assets/gui/Icons/T_UI_ico_pieces_knight.png" id="6_efxa6"]
 [ext_resource type="Texture2D" uid="uid://dsx3v5ttv3vxg" path="res://assets/gui/Icons/T_UI_ico_pieces_queen.png" id="7_dg77c"]
 [ext_resource type="Texture2D" uid="uid://csgohm6m430j8" path="res://assets/gui/Icons/T_UI_ico_hire_pawn.png" id="10_4c57u"]
+[ext_resource type="AudioStream" uid="uid://dx0dwivh6u7tk" path="res://assets/sounds/Music/Battle Theme.mp3" id="11_efxa6"]
 
 [sub_resource type="FontVariation" id="FontVariation_1bvp3"]
 base_font = ExtResource("5_lquwl")
@@ -133,6 +134,10 @@ theme = ExtResource("4_1bvp3")
 text = "Hire Pawn (5)
 "
 icon = ExtResource("10_4c57u")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1078190569]
+stream = ExtResource("11_efxa6")
+autoplay = true
 
 [node name="GameOverPanel" type="PanelContainer" parent="." unique_id=574178355]
 process_mode = 2

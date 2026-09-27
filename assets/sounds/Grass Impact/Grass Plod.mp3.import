@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://df4umujatritc"
+path="res://.godot/imported/Grass Plod.mp3-68ec599793f1d3f7f7fd39e5d2528a62.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Grass Impact/Grass Plod.mp3"
+dest_files=["res://.godot/imported/Grass Plod.mp3-68ec599793f1d3f7f7fd39e5d2528a62.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
