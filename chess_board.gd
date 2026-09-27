@@ -13,7 +13,7 @@ const CHESS_TILE = preload("uid://bre0otua4gpui")
 @export_range(0.0, 1.0) var enemy_spawn_chance: float = 0.20
 
 signal tile_right_clicked(tile: ChessTile)
-
+signal on_player_king_capture()
 
 enum TurnState { WHITE, BLACK }
 var turn: TurnState = TurnState.WHITE
@@ -519,7 +519,10 @@ func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 		if piece.team == ChessPiece.Team.WHITE and enemy_piece.team == ChessPiece.Team.BLACK:
 			_award_capture_coins(enemy_piece)
 		enemy_piece.queue_free()
-
+	
+	if piece.team == ChessPiece.Team.WHITE and piece.piece_type == ChessPiece.PieceType.KING:
+		on_player_king_capture.emit()
+	
 	set_piece(old_pos.x, old_pos.y, null)
 	var old_tile := get_tile(old_pos.x, old_pos.y)
 	if old_tile:
