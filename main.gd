@@ -14,8 +14,9 @@ const QUEEN_PRICE: int = 25
 @onready var world: World = $SubViewportContainer/SubViewport/World
 @onready var upgrade_menu: PopupMenu = $UpgradeMenu
 
-@onready var turn_counter: Label = $MarginContainer/VBoxContainer/TurnCounter
-@onready var coin_counter: Label = $MarginContainer/VBoxContainer/CoinContainer/CoinCounter
+@onready var turn_counter: Label = $InfoContainer/VBoxContainer/TurnCounter
+@onready var coin_counter: Label = $InfoContainer/VBoxContainer/CoinContainer/CoinCounter
+@onready var pawn_button: Button = $MarginContainer/PawnButton
 
 @export var coins: int = 0:
 	set(new_coins):
@@ -23,6 +24,9 @@ const QUEEN_PRICE: int = 25
 		if not is_node_ready():
 			await ready
 		coin_counter.text = str(coins)
+		print("no pawn :()")
+		pawn_button.disabled = (coins < PAWN_PRICE)
+		
 
 @export var turn: int = 1:
 	set(new_turn):
@@ -39,11 +43,18 @@ func _ready() -> void:
 	_populate_upgrade_window()
 	upgrade_menu.index_pressed.connect(_on_index_pressed)
 	world.tile_right_clicked.connect(_on_tile_right_clicked)
+	world.chess_board.turn_changed.connect(_on_turn_changed)
+	world.chess_board.coins_gained.connect(_on_coins_gained)
+	pawn_button.pressed.connect(_on_pawn_button_pressed)
+	coins = coins
+	turn = turn
+	
 
 func _on_tile_right_clicked(tile: ChessTile) -> void:
 	if not tile.occupying_piece:
 		return
-	if tile.occupying_piece.team == ChessPiece.Team.WHITE:
+	var piece: ChessPiece = tile.occupying_piece
+	if piece.team == ChessPiece.Team.WHITE and piece.piece_type == ChessPiece.PieceType.PAWN:
 		_open_upgrade_window()
 		right_clicked_tile = tile
 	
@@ -82,17 +93,17 @@ func _on_index_pressed(idx: int) -> void:
 
 
 func _upgrade_piece(piece: ChessPiece, type: ChessPiece.PieceType) -> void:
-	piece.change_piece(type)
+	piece.piece_type = type
+	world.chess_board.end_turn()
 
-
-#func _gui_input(event: InputEvent) -> void:
-	#print(event)
-	#if event is InputEventMouseButton:
-		#if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			#print(event)
-			## Position and display the popup at the mouse cursor
-			#upgrade_menu.position = Vector2i(event.global_position)
-			#upgrade_menu.popup()
+func _on_turn_changed(turn: ChessBoard.TurnState) -> void:
+	pass
+	
+func _on_coins_gained(new_coins: int) -> void:
+	coins = new_coins
+	
+func _on_pawn_button_pressed() -> void:
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
