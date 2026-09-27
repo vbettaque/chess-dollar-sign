@@ -17,7 +17,7 @@ signal tile_right_clicked(tile: ChessTile)
 signal turn_changed(turn: TurnState)
 signal board_cleared_state_changed(is_cleared: bool)
 signal coins_gained(coins: int)
-
+signal player_king_capture()
 # --- State & Enums ---
 enum TurnState { WHITE, BLACK }
 var turn: TurnState = TurnState.WHITE
@@ -509,7 +509,10 @@ func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 	if enemy_piece:
 		if piece.team == ChessPiece.Team.WHITE and enemy_piece.team == ChessPiece.Team.BLACK:
 			_award_capture_coins(enemy_piece)
+		if piece.team == ChessPiece.Team.WHITE and piece.piece_type == ChessPiece.PieceType.KING:
+			player_king_capture.emit()
 		enemy_piece.queue_free()
+		
 
 	set_piece(old_pos.x, old_pos.y, null)
 	var old_tile := get_tile(old_pos.x, old_pos.y)
