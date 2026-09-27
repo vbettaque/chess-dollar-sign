@@ -112,7 +112,9 @@ func _on_coins_gained(new_coins: int) -> void:
 	coins += new_coins
 	
 func _on_pawn_button_pressed() -> void:
-	pass
+	if coins < 5:
+		return
+	world.chess_board.spawn_new_pawn()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
