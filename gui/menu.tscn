@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://ciha5ten0o00k" path="res://gui/menu.gd" id="1_3hl5a"]
 [ext_resource type="Theme" uid="uid://dmqi4uo3imwp6" path="res://gui/theme.tres" id="1_iots8"]
 [ext_resource type="Texture2D" uid="uid://balupxpil51so" path="res://assets/gui/Textures/logo.png" id="3_lnc0w"]
+[ext_resource type="AudioStream" uid="uid://drcc531bx8quc" path="res://assets/sounds/Music/Cashmate Title Theme.mp3" id="5_vd72o"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iots8"]
 shader = ExtResource("1_0n48u")
@@ -55,3 +56,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("1_iots8")
 text = "Play"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1902304870]
+stream = ExtResource("5_vd72o")
+autoplay = true

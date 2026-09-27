@@ -67,3 +67,5 @@ sky_mode = 1
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1113432549]
 visible = false
 size = Vector3(16, 1, 16)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=585642668]

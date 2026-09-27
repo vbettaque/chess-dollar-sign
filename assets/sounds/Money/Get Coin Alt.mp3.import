@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dm74lwaqmmmvt"
+path="res://.godot/imported/Get Coin Alt.mp3-d8d5b01e62625f620736309859f9cd53.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Money/Get Coin Alt.mp3"
+dest_files=["res://.godot/imported/Get Coin Alt.mp3-d8d5b01e62625f620736309859f9cd53.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
