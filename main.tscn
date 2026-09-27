@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d3v7d43wqfhxb" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://bum2vkdwwojkg" path="res://chess_board.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://btkmqsabggtle" path="res://pieces/pawn.tscn" id="2_0xm2m"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7dm0k"]
 sky_top_color = Color(0.38431373, 0.45490196, 0.9137255, 1)
@@ -19,6 +20,7 @@ script = ExtResource("1_0xm2m")
 
 [node name="ChessBoard" type="Node3D" parent="." unique_id=521377053]
 script = ExtResource("1_ig7tw")
+pawn_scene = ExtResource("2_0xm2m")
 
 [node name="CameraRig" type="Node3D" parent="." unique_id=1700801412]
 
