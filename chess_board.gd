@@ -170,7 +170,7 @@ func _generate_coins_for_pawns() -> void:
 
 	if pawn_count > 0:
 		coins += pawn_count
-		coins_gained.emit(coins)
+		coins_gained.emit(pawn_count)
 
 # --- Piece Spawner ---
 
@@ -538,7 +538,7 @@ func _award_capture_coins(captured_piece: ChessPiece) -> void:
 	var value: int = CAPTURE_COIN_VALUES.get(captured_piece.piece_type, 0)
 	if value > 0:
 		coins += value
-		coins_gained.emit(coins)
+		coins_gained.emit(value)
 	print("current coins: ", coins)
 
 # -- valid moves ---
@@ -649,3 +649,6 @@ func _evaluate_move(piece: ChessPiece, target_pos: Vector2i) -> float:
 	# Add random noise to break ties
 	score += randf() * 0.05
 	return score
+
+
+	

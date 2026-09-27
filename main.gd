@@ -82,7 +82,8 @@ func _on_index_pressed(idx: int) -> void:
 
 
 func _upgrade_piece(piece: ChessPiece, type: ChessPiece.PieceType) -> void:
-	piece.piece_type = type
+	piece.change_piece(type)
+
 
 #func _gui_input(event: InputEvent) -> void:
 	#print(event)

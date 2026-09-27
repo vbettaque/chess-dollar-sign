@@ -1,6 +1,16 @@
 class_name ChessPiece
 extends Node3D
 
+# Preload scene resources into a Dictionary for clean lookups
+const PIECE_SCENES: Dictionary[PieceType, PackedScene] = {
+	PieceType.PAWN: preload("res://pieces/pawn.tscn"),
+	PieceType.KNIGHT: preload("res://pieces/knight.tscn"),
+	PieceType.BISHOP: preload("res://pieces/bishop.tscn"),
+	PieceType.ROOK: preload("res://pieces/rook.tscn"),
+	PieceType.QUEEN: preload("res://pieces/queen.tscn"),
+	PieceType.KING: preload("res://pieces/king.tscn")
+}
+
 enum PieceType { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING }
 enum Team { WHITE, BLACK }
 
@@ -54,3 +64,37 @@ func animate_move_to_position(target_world_pos: Vector3) -> void:
 
 	await tween.finished
 	is_selected = false
+
+func change_piece(type: PieceType) -> void:
+	piece_type = type
+	update_mesh(type)
+
+func update_mesh(type: PieceType) -> void:
+	if not is_node_ready(): 
+		await ready
+
+	# 1. Remove the old mesh instance if one exists
+	if is_instance_valid(mesh_node):
+		mesh_node.queue_free()
+		mesh_node = null
+
+	# 2. Get the scene for the target piece type
+	var scene: PackedScene = PIECE_SCENES.get(type)
+	if not scene:
+		push_error("No scene found for piece type: ", type)
+		return
+
+	# 3. Instantiate and attach the new mesh scene
+	var instance := scene.instantiate()
+	add_child(instance)
+
+	# 4. Update mesh_node reference
+	if instance is MeshInstance3D:
+		mesh_node = instance
+	else:
+		# If the scene root is a Node3D container, grab its first MeshInstance3D child
+		mesh_node = instance.find_children("*", "MeshInstance3D", true, false).front() as MeshInstance3D
+
+	# 5. Re-apply team color shader to the newly added mesh
+	apply_team_color(team)
+	
