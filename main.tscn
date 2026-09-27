@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://d3v7d43wqfhxb" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://bum2vkdwwojkg" path="res://chess_board.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://btkmqsabggtle" path="res://pieces/pawn.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://cql4u1hx3xk1r" path="res://pieces/king.tscn" id="7_efxa6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7dm0k"]
 sky_top_color = Color(0.38431373, 0.45490196, 0.9137255, 1)
@@ -21,6 +22,7 @@ script = ExtResource("1_0xm2m")
 [node name="ChessBoard" type="Node3D" parent="." unique_id=521377053]
 script = ExtResource("1_ig7tw")
 pawn_scene = ExtResource("2_0xm2m")
+king_scene = ExtResource("7_efxa6")
 
 [node name="CameraRig" type="Node3D" parent="." unique_id=1700801412]
 
@@ -28,7 +30,18 @@ pawn_scene = ExtResource("2_0xm2m")
 transform = Transform3D(0.9281864, -0.33840477, 0.15476495, 0.0431011, 0.51087606, 0.8585732, -0.36961097, -0.7902455, 0.48877382, 1.5354751, 5.0649104, 4.525994)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=695648045]
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
 environment = SubResource("Environment_7dm0k")
+camera_attributes = null
+compositor = null
+script = null
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=1123792538]
 transform = Transform3D(-0.2733753, 0.75207084, -0.5997128, 0, 0.6234621, 0.7818536, 0.9619075, 0.21373947, -0.17043911, 0, 12.055799, 0)
