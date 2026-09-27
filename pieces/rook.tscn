@@ -1,3 +1,9 @@
 [gd_scene format=3 uid="uid://dmugy18g5h40e"]
 
+[ext_resource type="ArrayMesh" uid="uid://cjcxb2lq6bto" path="res://assets/meshes/Rook01.obj" id="1_ib188"]
+
 [node name="Rook" type="Node3D" unique_id=447609031]
+
+[node name="Rook01" type="MeshInstance3D" parent="." unique_id=403184122]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.02336657, 0, -0.009305954)
+mesh = ExtResource("1_ib188")

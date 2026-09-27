@@ -7,5 +7,5 @@
 script = ExtResource("1_cuhp4")
 
 [node name="Pawn03" type="MeshInstance3D" parent="." unique_id=789703812]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0016050339, 0.0060465336, -0.0018737018)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0016050339, 0.0060465336, -0.0018737018)
 mesh = ExtResource("2_6wcmn")

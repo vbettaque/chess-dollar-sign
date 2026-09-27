@@ -20,6 +20,9 @@ var pieces: Array[ChessPiece]
 var piece_scenes: Dictionary[ChessPiece.PieceType, PackedScene] = {}
 var selected_piece: ChessPiece = null
 var valid_move_tiles: Array[Vector2i] = []
+# Board State Tracking
+signal board_cleared_state_changed(is_cleared: bool)
+
 
 func _ready() -> void:
 	tiles.resize(64)
@@ -106,7 +109,7 @@ func _spawn_initial_pieces() -> void:
 		#_spawn_piece_at(x, 0, ChessPiece.PieceType.PAWN, ChessPiece.Team.WHITE)
 	_spawn_piece_at(4, 0, ChessPiece.PieceType.KING, ChessPiece.Team.WHITE)
 
-	# 2. Spawn initial random enemy pieces along top two rows (y = 6 and y = 7)
+	# 2. Spawn initial random enemy pieces along top n rows rows (i.e. if n = 2 then y = 6 and y = 7)
 	for y in range(6, 8):
 		_spawn_random_enemy_row(y, ChessPiece.Team.BLACK)
 
@@ -118,8 +121,10 @@ func _spawn_random_enemy_row(y: int, team: ChessPiece.Team) -> void:
 		#ChessPiece.PieceType.ROOK,
 		#ChessPiece.PieceType.QUEEN
 	]
-
+	## Enemy row generator ensuring pieces are not placed on existing units
 	for x in range(8):
+		if get_piece(x, y) != null:
+			continue
 		if randf() < enemy_spawn_chance:
 			var random_type: ChessPiece.PieceType = enemy_types.pick_random()
 			_spawn_piece_at(x, y, random_type, team)
@@ -157,47 +162,70 @@ func _spawn_piece_at(x: int, y: int, type: ChessPiece.PieceType, team: ChessPiec
 	var local_top_y: float = tile.size.y / 2.0
 	piece.position = Vector3(0, local_top_y, 0)
 
-	# Optional: Drop-in animation when spawned
+	#Drop-in animation when spawned
 	piece.position.y += 5.0
 	var drop_tween: Tween = get_tree().create_tween()
 	drop_tween.tween_property(piece, "position:y", local_top_y, 0.4).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 
 	return piece
 
+# --- check if board is cleared ---
+var is_board_cleared: bool = false:
+	set(value):
+		if is_board_cleared != value:
+			is_board_cleared = value
+			emit_signal("board_cleared_state_changed", is_board_cleared)
+			if is_board_cleared:
+				_on_board_cleared()
 
+# Returns true if there are zero enemy (BLACK) pieces on the board
+func check_is_board_cleared() -> bool:
+	for piece in pieces:
+		if piece != null and piece.team == ChessPiece.Team.BLACK:
+			return false # Found a black piece, board is not clear
+	return true
+
+# Re-evaluates board state and updates the boolean variable
+func update_board_cleared_state() -> void:
+	is_board_cleared = check_is_board_cleared()
+
+func _on_board_cleared() -> void:
+	print("Board cleared! No black pieces remaining.")
+	# 
+	advance_rows(4)
 # --- Board Advance Mechanics ---
 
 func advance_rows(rows: int) -> void:
+	deselect_piece()
 	is_advancing = true
 	var tween: Tween = get_tree().create_tween().set_parallel(true)
 
-	# 1. Take a clean snapshot of existing board state
 	var old_tiles_grid: Array[ChessTile] = tiles.duplicate()
 	var old_pieces_grid: Array[ChessPiece] = pieces.duplicate()
-	
-	# Clear arrays completely before reassignment
+
 	tiles.fill(null)
 	pieces.fill(null)
 
 	var removed_tiles: Array[ChessTile] = []
 
-	# 2. Process active board shift (Y outer loop = Row Major Order)
 	for y in range(8):
 		for x in range(8):
 			var tile: ChessTile = old_tiles_grid[y * 8 + x]
 			var piece: ChessPiece = old_pieces_grid[y * 8 + x]
 
 			if y < rows:
-				# Bottom rows fall off and are prepped for recycling
 				removed_tiles.append(tile)
-
 				var subtween: Tween = get_tree().create_tween().set_parallel(true)
+				if is_board_cleared and piece and piece.team == ChessPiece.Team.WHITE:
+					# Detach immediately so the piece isn't dragged through the
+					# recycled tile's fall/teleport animation. It gets re-parented
+					# to its real tile once the shift settles.
+					piece.reparent(self, true)
+					set_piece(x, y, piece)
+				elif piece:
+					subtween.chain().tween_callback(piece.queue_free)
 				subtween.tween_property(tile, "process_mode", PROCESS_MODE_DISABLED, 0)
 				subtween.tween_property(tile, "position:y", -10, 0.1).set_delay(x * 0.1)
-
-				if piece:
-					subtween.chain().tween_callback(piece.queue_free)
-
 				subtween.chain().tween_property(tile, "visible", false, 0)
 				subtween.tween_property(tile, "position:y", 10, 0)
 				subtween.tween_property(tile, "position:z", tile.position.z - 8 * tile.size.z, 0)
@@ -205,45 +233,57 @@ func advance_rows(rows: int) -> void:
 				subtween.tween_property(tile, "position:y", 0, 0.5).set_delay(x * 0.01)
 				tween.tween_subtween(subtween)
 			else:
-				# Shift tiles/pieces down by 'rows' and sync coordinates
 				var new_y := y - rows
-				
-				# set_tile & set_piece update tile.board_position and piece.board_position
 				set_tile(x, new_y, tile)
-				set_piece(x, new_y, piece)
-				
-				if tile:
-					tile.occupying_piece = piece
 
-	# 3. Place recycled bottom tiles at top row positions
+				if is_board_cleared and piece and piece.team == ChessPiece.Team.WHITE:
+					set_piece(x, y, piece)
+				elif piece:
+					set_piece(x, new_y, piece)
+
 	var tile_index := 0
 	for y in range(rows):
-		var top_y := (8 - rows) + y  # For rows=2: y=0 gives row 6, y=1 gives row 7
+		var top_y := (8 - rows) + y
 		for x in range(8):
 			var recycled_tile: ChessTile = removed_tiles[tile_index]
 			tile_index += 1
-			
-			# Reset occupation state and set proper tile/piece references
 			recycled_tile.occupying_piece = null
 			set_tile(x, top_y, recycled_tile)
-			set_piece(x, top_y, null)
 
 	await tween.finished
-	
-	# 4. Spawn new enemy row at the top
-	for y in range(8 - rows, 8):
-		_spawn_random_enemy_row(y, ChessPiece.Team.BLACK)
 
-	# 5. Animate board shift forward & re-enable tile interactions
 	tween = get_tree().create_tween().set_parallel(true)
 	for x in range(8):
 		for y in range(8):
 			var tile: ChessTile = get_tile(x, y)
+			var piece: ChessPiece = get_piece(x, y)
 			if tile:
+				tile.occupying_piece = piece
 				tween.tween_property(tile, "position:z", tile.position.z + rows * tile.size.z, 0.5)
 				tween.tween_property(tile, "process_mode", PROCESS_MODE_INHERIT, 0)
+			if piece:
+				var tile_width: float = tile.size.x if tile else 1.0
+				var tile_depth: float = tile.size.z if tile else 1.0
+				var target_3d := Vector3((x - 3.5) * tile_width, 0.0, (3.5 - y) * tile_depth)
+				tween.tween_property(piece, "global_position", target_3d, 0.5)
 
-	tween.chain().tween_property(self, "is_advancing", false, 0)
+	await tween.finished
+
+	# Re-attach every piece to whatever tile now actually sits at its grid cell,
+	# so future logic (move_piece, current_tile, etc.) stays consistent.
+	for x in range(8):
+		for y in range(8):
+			var tile: ChessTile = get_tile(x, y)
+			var piece: ChessPiece = get_piece(x, y)
+			if piece and tile and piece.get_parent() != tile:
+				piece.reparent(tile, true)
+				piece.current_tile = tile
+
+	for y in range(8 - rows, 8):
+		_spawn_random_enemy_row(y, ChessPiece.Team.BLACK)
+
+	update_board_cleared_state()
+	is_advancing = false
 	
 func handle_tile_clicked(tile: ChessTile) -> void:
 	if is_advancing:
@@ -363,6 +403,9 @@ func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 	piece.current_tile = target_tile
 	target_tile.occupying_piece = piece
 	set_piece(target_pos.x, target_pos.y, piece)
+	
+	# Check if capturing this piece cleared the board
+	update_board_cleared_state()
 
 	var local_top_y := target_tile.size.y / 2.0
 	var move_tween := get_tree().create_tween()
