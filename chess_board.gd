@@ -14,8 +14,11 @@ const CHESS_TILE = preload("uid://bre0otua4gpui")
 
 signal tile_right_clicked(tile: ChessTile)
 
-var turn = "WHITE"
-enum turnState {PlayerTurn, EnemyTurn}
+
+enum TurnState { WHITE, BLACK }
+var turn: TurnState = TurnState.WHITE
+signal turn_changed(turn: TurnState)
+
 var is_advancing: bool = false
 var tiles: Array[ChessTile]
 var pieces: Array[ChessPiece]
@@ -42,14 +45,15 @@ func _ready() -> void:
 func end_turn() -> void:
 	deselect_piece()
 	
-	if turn == "WHITE":
+	if turn == TurnState.WHITE:
 		_generate_coins_for_pawns()
 		#TODO: REMOVE LATER
 		print("current coins: ", coins)
 	
-	turn = "BLACK" if turn == "WHITE" else "WHITE"
+	turn = TurnState.BLACK if turn == TurnState.WHITE else TurnState.WHITE
+	turn_changed.emit(TurnState.BLACK)
 
-	if turn == "BLACK":
+	if turn == TurnState.BLACK:
 		process_enemy_turn()
 
 # --- Grid Index Helper Methods ---
@@ -337,7 +341,7 @@ func handle_tile_clicked(tile: ChessTile) -> void:
 
 	# 1. Select player piece if it matches active turn team
 	if clicked_piece:
-		var current_team := ChessPiece.Team.WHITE if turn == "WHITE" else ChessPiece.Team.BLACK
+		var current_team := ChessPiece.Team.WHITE if turn == TurnState.WHITE else ChessPiece.Team.BLACK
 		if clicked_piece.team == current_team:
 			select_piece(clicked_piece)
 			return
