@@ -166,8 +166,7 @@ func end_turn() -> void:
 	
 	if turn == TurnState.BLACK:
 		process_enemy_turn()
-	if has_player_king_died:
-		player_king_capture.emit()
+	
 
 # --- Grid Helpers ---
 func set_tile(x: int, y: int, tile: ChessTile) -> void:
@@ -529,6 +528,8 @@ func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 	if enemy_piece:
 		if piece.team == ChessPiece.Team.WHITE and enemy_piece.team == ChessPiece.Team.BLACK:
 			_award_capture_coins(enemy_piece)
+		if enemy_piece.team == ChessPiece.Team.WHITE and enemy_piece.piece_type == ChessPiece.PieceType.KING:
+			has_player_king_died = true
 		enemy_piece.queue_free()
 		
 
@@ -550,9 +551,10 @@ func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 	move_tween.tween_property(piece, "position", Vector3(0, local_top_y, 0), 0.25)\
 		.set_trans(Tween.TRANS_QUAD)\
 		.set_ease(Tween.EASE_OUT)
-	if enemy_piece:
-		if enemy_piece.team == ChessPiece.Team.WHITE and enemy_piece.piece_type == ChessPiece.PieceType.KING:
-				has_player_king_died = true
+	await move_tween.finished
+	if has_player_king_died:
+		player_king_capture.emit()
+		
 
 func _award_capture_coins(captured_piece: ChessPiece) -> void:
 	var value: int = CAPTURE_COIN_VALUES.get(captured_piece.piece_type, 0)
