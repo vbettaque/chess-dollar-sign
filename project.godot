@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Chess Dollar Sign"
-run/main_scene="uid://visasat58mgs"
+run/main_scene="uid://dg1222imb437m"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
