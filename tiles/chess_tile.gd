@@ -2,6 +2,7 @@ class_name ChessTile
 extends Node3D
 
 signal tile_clicked(tile: ChessTile)
+signal tile_right_clicked(tile: ChessTile)
 
 enum TileType { WHITE, BLACK }
 
@@ -39,8 +40,11 @@ func _ready() -> void:
 	area.input_event.connect(_on_area_input_event)
 
 func _on_area_input_event(_camera: Node, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		tile_clicked.emit(self)
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			tile_clicked.emit(self)
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			tile_right_clicked.emit(self)
 
 func _update_tile() -> void:
 	if not is_node_ready():

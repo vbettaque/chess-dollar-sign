@@ -1,11 +1,17 @@
+class_name World
 extends Node3D
 
 @onready var chess_board: ChessBoard = $ChessBoard
 
+signal tile_right_clicked(tile: ChessTile)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	chess_board.tile_right_clicked.connect(_on_tile_right_clicked)
 
+
+func _on_tile_right_clicked(tile: ChessTile):
+	tile_right_clicked.emit(tile)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
