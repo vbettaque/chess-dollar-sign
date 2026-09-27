@@ -96,10 +96,12 @@ text = "Turn: 1"
 
 [node name="CoinContainer" type="HBoxContainer" parent="InfoContainer/VBoxContainer" unique_id=1289125007]
 layout_mode = 2
+theme_override_constants/separation = 8
 
 [node name="CoinTexture" type="TextureRect" parent="InfoContainer/VBoxContainer/CoinContainer" unique_id=1102925834]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("3_h2yge")
 
 [node name="CoinCounter" type="Label" parent="InfoContainer/VBoxContainer/CoinContainer" unique_id=1655670660]

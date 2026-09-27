@@ -15,6 +15,9 @@ const QUEEN_PRICE: int = 25
 @onready var upgrade_menu: PopupMenu = $UpgradeMenu
 
 @onready var turn_counter: Label = $InfoContainer/VBoxContainer/TurnCounter
+
+@onready var coin_container: HBoxContainer = $InfoContainer/VBoxContainer/CoinContainer
+@onready var coin_texture: TextureRect = $InfoContainer/VBoxContainer/CoinContainer/CoinTexture
 @onready var coin_counter: Label = $InfoContainer/VBoxContainer/CoinContainer/CoinCounter
 @onready var pawn_button: Button = $MarginContainer/PawnButton
 
@@ -23,9 +26,7 @@ const QUEEN_PRICE: int = 25
 		coins = new_coins
 		if not is_node_ready():
 			await ready
-		coin_counter.text = str(coins)
-		print("no pawn :()")
-		pawn_button.disabled = (coins < PAWN_PRICE)
+		_update_coin_counter()
 		
 
 @export var turn: int = 1:
@@ -91,6 +92,13 @@ func _on_index_pressed(idx: int) -> void:
 			coins -= QUEEN_PRICE
 			_upgrade_piece(right_clicked_tile.occupying_piece, ChessPiece.PieceType.QUEEN)
 
+func _update_coin_counter() -> void:
+	coin_counter.text = str(coins)
+	pawn_button.disabled = (coins < PAWN_PRICE)
+	var tween = coin_texture.create_tween()
+	tween.tween_property(coin_texture, "scale", Vector2(1.2, 1.2), 0.2)
+	tween.tween_property(coin_texture, "scale", Vector2(1, 1), 0.2)
+	
 
 func _upgrade_piece(piece: ChessPiece, type: ChessPiece.PieceType) -> void:
 	piece.change_piece(type)
