@@ -10,7 +10,7 @@ const CHESS_TILE = preload("uid://bre0otua4gpui")
 @export var rook_scene: PackedScene
 @export var queen_scene: PackedScene
 @export var king_scene: PackedScene
-@export_range(0.0, 1.0) var enemy_spawn_chance: float = 0.10
+@export_range(0.0, 1.0) var enemy_spawn_chance: float = 0.20
 
 var turn = "WHITE"
 enum turnState {PlayerTurn, EnemyTurn}
@@ -134,9 +134,9 @@ func _init_board() -> void:
 # --- Set up starting pieces ---
 func _spawn_initial_pieces() -> void:
 	# 1. Spawn player pawns along the bottom row (y = 1)
-	_spawn_piece_at(0, 0, ChessPiece.PieceType.ROOK, ChessPiece.Team.WHITE)
-	_spawn_piece_at(1, 0, ChessPiece.PieceType.KNIGHT, ChessPiece.Team.WHITE)
-	_spawn_piece_at(2, 0, ChessPiece.PieceType.BISHOP, ChessPiece.Team.WHITE)
+	_spawn_piece_at(3, 1, ChessPiece.PieceType.PAWN, ChessPiece.Team.WHITE)
+	_spawn_piece_at(4, 1, ChessPiece.PieceType.PAWN, ChessPiece.Team.WHITE)
+	_spawn_piece_at(5, 1, ChessPiece.PieceType.PAWN, ChessPiece.Team.WHITE)
 	_spawn_piece_at(4, 0, ChessPiece.PieceType.KING, ChessPiece.Team.WHITE)
 
 	# 2. Spawn initial random enemy pieces along top n rows rows (i.e. if n = 2 then y = 6 and y = 7)
@@ -146,10 +146,10 @@ func _spawn_initial_pieces() -> void:
 func _spawn_random_enemy_row(y: int, team: ChessPiece.Team) -> void:
 	var enemy_types: Array[ChessPiece.PieceType] = [
 		ChessPiece.PieceType.PAWN,
-		#ChessPiece.PieceType.KNIGHT,
-		#ChessPiece.PieceType.BISHOP,
-		#ChessPiece.PieceType.ROOK,
-		#ChessPiece.PieceType.QUEEN
+		ChessPiece.PieceType.KNIGHT,
+		ChessPiece.PieceType.BISHOP,
+		ChessPiece.PieceType.ROOK,
+		ChessPiece.PieceType.QUEEN
 	]
 	## Enemy row generator ensuring pieces are not placed on existing units
 	for x in range(8):
