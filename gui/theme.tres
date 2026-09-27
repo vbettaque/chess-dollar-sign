@@ -59,6 +59,13 @@ texture_margin_right = 43.0
 texture_margin_bottom = 43.0
 modulate_color = Color(0.85814106, 0.85814106, 0.85814106, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4c57u"]
+texture = ExtResource("1_i22a1")
+texture_margin_left = 43.0
+texture_margin_top = 43.0
+texture_margin_right = 43.0
+texture_margin_bottom = 43.0
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kek77"]
 texture = ExtResource("3_jihbb")
 texture_margin_left = 43.0
@@ -97,6 +104,7 @@ MarginContainer/constants/margin_bottom = 200
 MarginContainer/constants/margin_left = 200
 MarginContainer/constants/margin_right = 200
 MarginContainer/constants/margin_top = 200
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_4c57u")
 PopupMenu/colors/font_color = Color(0.3529412, 0.25882354, 0.10980392, 1)
 PopupMenu/colors/font_disabled_color = Color(0.9529412, 0.19215687, 0.32156864, 1)
 PopupMenu/colors/font_hover_color = Color(0.9647059, 0.87058824, 0.73333335, 1)

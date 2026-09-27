@@ -1,5 +1,7 @@
 extends Control
 
+const WORLD = preload("uid://b3pc6rejvbg2r")
+
 const KNIGHT_IDX: int = 1
 const BISHOP_IDX: int = 2
 const ROOK_IDX: int = 3
@@ -20,6 +22,10 @@ const QUEEN_PRICE: int = 25
 @onready var coin_texture: TextureRect = $InfoContainer/VBoxContainer/CoinContainer/CoinTexture
 @onready var coin_counter: Label = $InfoContainer/VBoxContainer/CoinContainer/CoinCounter
 @onready var pawn_button: Button = $MarginContainer/PawnButton
+
+@onready var game_over_panel: PanelContainer = $GameOverPanel
+@onready var restart_button: Button = $GameOverPanel/MarginContainer/VBoxContainer/RestartButton
+
 
 @export var coins: int = 10:
 	set(new_coins):
@@ -47,6 +53,8 @@ func _ready() -> void:
 	world.chess_board.turn_changed.connect(_on_turn_changed)
 	world.chess_board.coins_gained.connect(_on_coins_gained)
 	pawn_button.pressed.connect(_on_pawn_button_pressed)
+	world.chess_board.player_king_capture.connect(_on_player_king_captured)
+	restart_button.pressed.connect(_on_restart_button_pressed)
 	coins = coins
 	turn = turn
 	
@@ -122,7 +130,12 @@ func _on_pawn_button_pressed() -> void:
 	world.chess_board.spawn_new_pawn()
 	
 func _on_player_king_captured() -> void:
-	pass
+	get_tree().paused = true
+	game_over_panel.visible = true
+	
+
+func _on_restart_button_pressed() -> void:
+	get_tree().reload_current_scene()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
