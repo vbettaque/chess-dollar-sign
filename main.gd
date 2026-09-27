@@ -18,7 +18,7 @@ const QUEEN_PRICE: int = 25
 @onready var coin_counter: Label = $InfoContainer/VBoxContainer/CoinContainer/CoinCounter
 @onready var pawn_button: Button = $MarginContainer/PawnButton
 
-@export var coins: int = 0:
+@export var coins: int = 10:
 	set(new_coins):
 		coins = new_coins
 		if not is_node_ready():
@@ -93,7 +93,7 @@ func _on_index_pressed(idx: int) -> void:
 
 
 func _upgrade_piece(piece: ChessPiece, type: ChessPiece.PieceType) -> void:
-	piece.piece_type = type
+	piece.change_piece(type)
 	world.chess_board.end_turn()
 
 func _on_turn_changed(turn_state: ChessBoard.TurnState) -> void:
