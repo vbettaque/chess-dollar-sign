@@ -1,13 +1,47 @@
 [gd_scene format=3 uid="uid://bre0otua4gpui"]
 
 [ext_resource type="Script" uid="uid://c4xdh150b0pem" path="res://tiles/chess_tile.gd" id="1_qsmgl"]
+[ext_resource type="Shader" uid="uid://o22rcd8gmf35" path="res://shaders/toon.gdshader" id="2_nuabe"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qsmgl"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qsmgl"]
 resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_nuabe")
+shader_parameter/albedo = Color(0.42358288, 0.42358288, 0.42358288, 1)
+shader_parameter/clamp_diffuse_to_max = false
+shader_parameter/cuts = 3
+shader_parameter/wrap = 0.0
+shader_parameter/steepness = 1.0
+shader_parameter/use_attenuation = true
+shader_parameter/use_specular = false
+shader_parameter/specular_strength = 1.0
+shader_parameter/specular_shininess = 16.0
+shader_parameter/use_rim = true
+shader_parameter/rim_width = 8.0
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/use_ramp = false
+shader_parameter/use_borders = false
+shader_parameter/border_width = 0.01
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_el6w8"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nuabe"]
 resource_local_to_scene = true
-albedo_color = Color(0, 0, 0, 1)
+render_priority = 0
+shader = ExtResource("2_nuabe")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/clamp_diffuse_to_max = false
+shader_parameter/cuts = 3
+shader_parameter/wrap = 0.0
+shader_parameter/steepness = 1.0
+shader_parameter/use_attenuation = true
+shader_parameter/use_specular = false
+shader_parameter/specular_strength = 1.0
+shader_parameter/specular_shininess = 16.0
+shader_parameter/use_rim = true
+shader_parameter/rim_width = 8.0
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/use_ramp = false
+shader_parameter/use_borders = false
+shader_parameter/border_width = 0.01
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
 albedo_color = Color(3.7541986e-06, 0.6470193, 0.792958, 1)
@@ -22,8 +56,8 @@ size = Vector3(1, 0.1, 1)
 [node name="ChessTile" type="Node3D" unique_id=522035209]
 script = ExtResource("1_qsmgl")
 tile_materials = Dictionary[int, Material]({
-0: SubResource("StandardMaterial3D_qsmgl"),
-1: SubResource("StandardMaterial3D_el6w8")
+0: SubResource("ShaderMaterial_nuabe"),
+1: SubResource("ShaderMaterial_qsmgl")
 })
 highlight_material = SubResource("StandardMaterial3D_h2yge")
 

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cql4u1hx3xk1r"]
 
 [ext_resource type="Script" uid="uid://csty76f35s01i" path="res://pieces/chesspiece.gd" id="1_4hwgk"]
-[ext_resource type="ArrayMesh" uid="uid://bqhar03l8qdd8" path="res://assets/12926_Wooden_Chess_King_Side_A_v1_l3.obj" id="1_v7vo4"]
+[ext_resource type="ArrayMesh" uid="uid://bqhar03l8qdd8" path="res://assets/meshes/12926_Wooden_Chess_King_Side_A_v1_l3.obj" id="1_v7vo4"]
 
 [node name="King" type="Node3D" unique_id=270302508]
 script = ExtResource("1_4hwgk")
