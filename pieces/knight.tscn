@@ -7,5 +7,5 @@
 script = ExtResource("1_xjawi")
 
 [node name="Knight01" type="MeshInstance3D" parent="." unique_id=1321334716]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.014231563, 0, 0.09118533)
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 0.014231563, 0, 0.09118533)
 mesh = ExtResource("1_6p52s")

@@ -7,5 +7,5 @@
 script = ExtResource("1_j2avg")
 
 [node name="Rook01" type="MeshInstance3D" parent="." unique_id=403184122]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.02336657, 0, -0.009305954)
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 0.02336657, 0, -0.009305954)
 mesh = ExtResource("1_ib188")
