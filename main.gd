@@ -34,7 +34,7 @@ const QUEEN_PRICE: int = 25
 		turn = new_turn
 		if not is_node_ready():
 			await ready
-		turn_counter.text = str("Turn: ", turn)
+		_update_turn_counter()
 
 var right_clicked_tile: ChessTile
 
@@ -99,6 +99,11 @@ func _update_coin_counter() -> void:
 	tween.tween_property(coin_texture, "scale", Vector2(1.2, 1.2), 0.2)
 	tween.tween_property(coin_texture, "scale", Vector2(1, 1), 0.2)
 	
+func _update_turn_counter() -> void:
+	turn_counter.text = str("Turn: ", turn)
+	var tween = turn_counter.create_tween()
+	tween.tween_property(turn_counter, "scale", Vector2(1.2, 1.2), 0.2)
+	tween.tween_property(turn_counter, "scale", Vector2(1, 1), 0.2)
 
 func _upgrade_piece(piece: ChessPiece, type: ChessPiece.PieceType) -> void:
 	piece.change_piece(type)
