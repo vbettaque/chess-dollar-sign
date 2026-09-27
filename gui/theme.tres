@@ -1,0 +1,35 @@
+[gd_resource type="Theme" format=3 uid="uid://dmqi4uo3imwp6"]
+
+[ext_resource type="Texture2D" uid="uid://gilu41nt2dfb" path="res://assets/gui/Textures/T_UI_button.png" id="1_e1x85"]
+[ext_resource type="FontFile" uid="uid://bhm3m66unb6ot" path="res://assets/gui/font/Rajdhani-Bold.ttf" id="2_cjfk0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vj6dk"]
+texture = ExtResource("1_e1x85")
+texture_margin_left = 43.0
+texture_margin_top = 43.0
+texture_margin_right = 43.0
+texture_margin_bottom = 43.0
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+modulate_color = Color(1.1401925, 1.1401925, 1.1401925, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wvktn"]
+texture = ExtResource("1_e1x85")
+texture_margin_left = 43.0
+texture_margin_top = 43.0
+texture_margin_right = 43.0
+texture_margin_bottom = 43.0
+
+[resource]
+default_font = ExtResource("2_cjfk0")
+default_font_size = 44
+Button/colors/font_color = Color(0.9607843, 0.8745098, 0.7372549, 1)
+Button/styles/hover = SubResource("StyleBoxTexture_vj6dk")
+Button/styles/normal = SubResource("StyleBoxTexture_wvktn")
+Label/colors/font_color = Color(0.9607843, 0.8745098, 0.7372549, 1)
+MarginContainer/constants/margin_bottom = 100
+MarginContainer/constants/margin_left = 100
+MarginContainer/constants/margin_right = 100
+MarginContainer/constants/margin_top = 100
