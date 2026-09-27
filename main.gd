@@ -125,8 +125,9 @@ func _on_coins_gained(new_coins: int) -> void:
 	coins += new_coins
 	
 func _on_pawn_button_pressed() -> void:
-	if coins < 5:
+	if coins < PAWN_PRICE:
 		return
+	coins -= PAWN_PRICE
 	world.chess_board.spawn_new_pawn()
 	
 func _on_player_king_captured() -> void:
