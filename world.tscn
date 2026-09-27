@@ -53,7 +53,6 @@ v_offset = -4.0
 fov = 52.2
 
 [node name="PostProcessingQuad" type="MeshInstance3D" parent="CameraRig" unique_id=1536841570]
-visible = false
 mesh = SubResource("QuadMesh_1bvp3")
 surface_material_override/0 = SubResource("ShaderMaterial_1bvp3")
 
