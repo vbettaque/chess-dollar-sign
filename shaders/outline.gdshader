@@ -25,8 +25,8 @@ void fragment() {
 	// Fixed: Changed mipmap level from 1 to 0. Screen textures don't have level 1 mipmaps on PC
 	vec2 screen_size = vec2(textureSize(screen_texture, 0));
 	
-	float px = 0.5 / screen_size.x;
-	float py = 0.5 / screen_size.y;
+	float px = 1.0 / screen_size.x;
+	float py = 1.0 / screen_size.y;
 	
 	float d = texture(depth_texture, SCREEN_UV).x;
 	float du = texture(depth_texture, SCREEN_UV + vec2(0.0, py)).x;
