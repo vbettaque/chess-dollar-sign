@@ -5,6 +5,8 @@
 
 [node name="Bishop" type="Node3D" unique_id=98608114]
 script = ExtResource("1_5s3ox")
+piece_type = null
+team = null
 
 [node name="Bishop01" type="MeshInstance3D" parent="." unique_id=2037262576]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.03230405, -1.1920929e-07, -0.0060765743)
