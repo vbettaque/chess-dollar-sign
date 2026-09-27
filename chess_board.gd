@@ -20,9 +20,13 @@ var pieces: Array[ChessPiece]
 var piece_scenes: Dictionary[ChessPiece.PieceType, PackedScene] = {}
 var selected_piece: ChessPiece = null
 var valid_move_tiles: Array[Vector2i] = []
+
 # Board State Tracking
 signal board_cleared_state_changed(is_cleared: bool)
 
+# --- Economy ---
+signal coins_gained(coins: int)
+var coins: int = 0
 
 func _ready() -> void:
 	tiles.resize(64)
@@ -35,6 +39,12 @@ func _ready() -> void:
 # --- Turn Handling ---
 func end_turn() -> void:
 	deselect_piece()
+	
+	if turn == "WHITE":
+		_generate_coins_for_pawns()
+		#TODO: REMOVE LATER
+		print("current coins: ", coins)
+	
 	turn = "BLACK" if turn == "WHITE" else "WHITE"
 
 	if turn == "BLACK":
@@ -105,8 +115,8 @@ func _init_board() -> void:
 # --- Set up starting pieces ---
 func _spawn_initial_pieces() -> void:
 	# 1. Spawn player pawns along the bottom row (y = 1)
-	#for x in range(8):
-		#_spawn_piece_at(x, 0, ChessPiece.PieceType.PAWN, ChessPiece.Team.WHITE)
+	for x in range(3,6):
+		_spawn_piece_at(x, 1, ChessPiece.PieceType.PAWN, ChessPiece.Team.WHITE)
 	_spawn_piece_at(4, 0, ChessPiece.PieceType.KING, ChessPiece.Team.WHITE)
 
 	# 2. Spawn initial random enemy pieces along top n rows rows (i.e. if n = 2 then y = 6 and y = 7)
@@ -128,6 +138,16 @@ func _spawn_random_enemy_row(y: int, team: ChessPiece.Team) -> void:
 		if randf() < enemy_spawn_chance:
 			var random_type: ChessPiece.PieceType = enemy_types.pick_random()
 			_spawn_piece_at(x, y, random_type, team)
+
+func _generate_coins_for_pawns() -> void:
+	var pawn_count := 0
+	for piece in pieces:
+		if piece != null and piece.team == ChessPiece.Team.WHITE and piece.piece_type == ChessPiece.PieceType.PAWN:
+			pawn_count += 1
+
+	if pawn_count > 0:
+		coins += pawn_count
+		coins_gained.emit(coins)
 
 # --- Piece Spawner ---
 
@@ -384,6 +404,15 @@ func get_king_moves(king: ChessPiece) -> Array[Vector2i]:
 func is_in_bounds(pos: Vector2i) -> bool:
 	return pos.x >= 0 and pos.x < 8 and pos.y >= 0 and pos.y < 8
 
+const CAPTURE_COIN_VALUES: Dictionary[ChessPiece.PieceType, int] = {
+	ChessPiece.PieceType.PAWN: 1,
+	ChessPiece.PieceType.KNIGHT: 1,
+	ChessPiece.PieceType.BISHOP: 1,
+	ChessPiece.PieceType.ROOK: 1,
+	ChessPiece.PieceType.QUEEN: 1,
+	ChessPiece.PieceType.KING: 10
+}
+
 # --- Piece Execution ---
 func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 	var old_pos := piece.board_position
@@ -391,6 +420,8 @@ func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 	var enemy_piece := get_piece(target_pos.x, target_pos.y)
 
 	if enemy_piece:
+		if piece.team == ChessPiece.Team.WHITE and enemy_piece.team == ChessPiece.Team.BLACK:
+			_award_capture_coins(enemy_piece)
 		enemy_piece.queue_free()
 
 	set_piece(old_pos.x, old_pos.y, null)
@@ -410,6 +441,13 @@ func move_piece(piece: ChessPiece, target_pos: Vector2i) -> void:
 	var local_top_y := target_tile.size.y / 2.0
 	var move_tween := get_tree().create_tween()
 	move_tween.tween_property(piece, "position", Vector3(0, local_top_y, 0), 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+func _award_capture_coins(captured_piece: ChessPiece) -> void:
+	var value: int = CAPTURE_COIN_VALUES.get(captured_piece.piece_type, 0)
+	if value > 0:
+		coins += value
+		coins_gained.emit(coins)
+	print("current coins: ", coins)
 
 # -- valid moves ---
 func get_valid_moves_for_piece(piece: ChessPiece) -> Array[Vector2i]:
