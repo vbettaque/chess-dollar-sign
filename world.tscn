@@ -48,9 +48,12 @@ king_scene = ExtResource("4_gbfbk")
 [node name="CameraRig" type="Node3D" parent="." unique_id=1700801412]
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=1464278010]
-transform = Transform3D(0.9281864, -0.33840477, 0.15476495, 0.0431011, 0.51087606, 0.8585732, -0.36961097, -0.7902455, 0.48877382, 1.5354751, 5.0649104, 4.525994)
+transform = Transform3D(1, 0, 0, 0, 0.5150991, 0.85726887, 0, -0.85726887, 0.5150991, 0, 9.6, 2)
+v_offset = -4.0
+fov = 52.2
 
 [node name="PostProcessingQuad" type="MeshInstance3D" parent="CameraRig" unique_id=1536841570]
+visible = false
 mesh = SubResource("QuadMesh_1bvp3")
 surface_material_override/0 = SubResource("ShaderMaterial_1bvp3")
 
