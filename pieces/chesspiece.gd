@@ -31,9 +31,9 @@ func apply_team_color(new_team: Team) -> void:
 	mat.shader = TOON
 	mat.set_shader_parameter("use_specular", false)
 	if team == Team.WHITE:
-		mat.set_shader_parameter("albedo", Color(0.911, 0.75, 0.579, 1.0))
+		mat.set_shader_parameter("albedo", Color(0.901, 0.747, 0.65, 1.0))
 	else:
-		mat.set_shader_parameter("albedo", Color(0.337, 0.388, 0.467, 1.0))
+		mat.set_shader_parameter("albedo", Color(0.529, 0.448, 0.59, 1.0))
 	
 	_apply_material_override_recursive(self, mat)
 

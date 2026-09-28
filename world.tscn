@@ -30,8 +30,11 @@ sky_material = SubResource("ProceduralSkyMaterial_7dm0k")
 
 [sub_resource type="Environment" id="Environment_7dm0k"]
 background_mode = 1
-background_color = Color(0.4011859, 0.5900458, 1, 1)
+background_color = Color(0.227873, 0.43224168, 0.3873767, 1)
 sky = SubResource("Sky_ig7tw")
+ambient_light_source = 2
+ambient_light_color = Color(0.15271777, 0.32616162, 0.3960528, 1)
+ambient_light_energy = 0.5
 
 [node name="World" type="Node3D" unique_id=308334451]
 script = ExtResource("1_036b0")
