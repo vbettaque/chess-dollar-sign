@@ -1,5 +1,6 @@
 extends Control
 
+const MENU = preload("uid://dg1222imb437m")
 const WORLD = preload("uid://b3pc6rejvbg2r")
 
 const KNIGHT_IDX: int = 1
@@ -25,6 +26,7 @@ const QUEEN_PRICE: int = 25
 
 @onready var game_over_panel: PanelContainer = $GameOverPanel
 @onready var restart_button: Button = $GameOverPanel/MarginContainer/VBoxContainer/RestartButton
+@onready var title_button: Button = $GameOverPanel/MarginContainer/VBoxContainer/TitleButton
 
 
 @export var coins: int = 10:
@@ -55,6 +57,7 @@ func _ready() -> void:
 	pawn_button.pressed.connect(_on_pawn_button_pressed)
 	world.chess_board.player_king_capture.connect(_on_player_king_captured)
 	restart_button.pressed.connect(_on_restart_button_pressed)
+	title_button.pressed.connect(_on_title_button_pressed)
 	coins = coins
 	turn = turn
 	
@@ -139,6 +142,10 @@ func _on_restart_button_pressed() -> void:
 	get_tree().paused = false
 	get_tree().reload_current_scene()
 
+func _on_title_button_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://gui/menu.tscn")
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

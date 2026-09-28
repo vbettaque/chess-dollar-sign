@@ -191,14 +191,20 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "Restart?"
 
+[node name="TitleButton" type="Button" parent="GameOverPanel/MarginContainer/VBoxContainer" unique_id=1689862513]
+layout_mode = 2
+text = "Return to Title
+"
+
 [node name="InstructionsContainer" type="MarginContainer" parent="." unique_id=982950000]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -486.0
+offset_top = -208.0
 offset_right = 486.0
 grow_vertical = 0
+mouse_filter = 2
 theme = ExtResource("4_1bvp3")
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 32
